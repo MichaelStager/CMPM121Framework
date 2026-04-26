@@ -5,9 +5,9 @@ using UnityEngine;
 public class MenuSelectorController : MonoBehaviour
 {
     public TextMeshProUGUI label;
-    public string level;
+    public Level level;
     public EnemySpawner spawner;
-    List<Level> levels;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,10 +21,10 @@ public class MenuSelectorController : MonoBehaviour
         
     }
 
-    public void SetLevel(string text)
+    public void SetLevel(Level selectedlevel)
     {
-        level = text;
-        label.text = text;
+        level = selectedlevel;
+        label.text = selectedlevel.name;
     }
 
     public void StartLevel()
