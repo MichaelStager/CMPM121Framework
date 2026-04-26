@@ -3,7 +3,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Enemy : MonoBehaviour
+public class EnemyData
 {
     public string name;
     public int sprite;

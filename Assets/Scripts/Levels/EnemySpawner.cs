@@ -55,13 +55,13 @@ public class EnemySpawner : MonoBehaviour
         GameManager.Instance.state = GameManager.GameState.INWAVE;
         for (int i = 0; i < 10; ++i)
         {
-            yield return SpawnZombie();
+            yield return SpawnEnemy();
         }
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
         GameManager.Instance.state = GameManager.GameState.WAVEEND;
     }
 
-    IEnumerator SpawnZombie()
+    IEnumerator SpawnEnemy()
     {
         SpawnPoint spawn_point = SpawnPoints[Random.Range(0, SpawnPoints.Length)];
         Vector2 offset = Random.insideUnitCircle * 1.8f;
