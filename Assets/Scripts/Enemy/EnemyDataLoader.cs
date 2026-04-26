@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class EnemyDataLoader : MonoBehaviour
 {
     //Returns a list of enemies
-    public List<EnemyData> GetEnemies()
+    public static List<EnemyData> GetEnemies()
     {
         TextAsset enemyJson = Resources.Load<TextAsset>("enemies");
 
