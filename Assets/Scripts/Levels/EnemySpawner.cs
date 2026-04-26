@@ -12,15 +12,27 @@ public class EnemySpawner : MonoBehaviour
     public Image level_selector;
     public GameObject button;
     public GameObject enemy;
-    public SpawnPoint[] SpawnPoints;    
+    public SpawnPoint[] SpawnPoints;
+    int wave;
+    List<EnemyData> enimes;
+    List<Level> levels;
+    Level selectedLevel;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameObject selector = Instantiate(button, level_selector.transform);
-        selector.transform.localPosition = new Vector3(0, 130);
-        selector.GetComponent<MenuSelectorController>().spawner = this;
-        selector.GetComponent<MenuSelectorController>().SetLevel("Start");
+        wave = 0;
+        levels = LevelDataLoader.GetLevels();
+        GameObject[] selectors = new GameObject[levels.Count];
+        for (int i=0; i < levels.Count; i++)
+        {
+            selectors[i] = Instantiate(button, level_selector.transform);
+            selectors[i].transform.localPosition = new Vector3(0, (i+1)*130);
+            selectors[i].GetComponent<MenuSelectorController>().spawner = this;
+            selectors[i].GetComponent<MenuSelectorController>().SetLevel(levels[i]);
+
+        }
     }
 
     // Update is called once per frame
@@ -29,21 +41,23 @@ public class EnemySpawner : MonoBehaviour
         
     }
 
-    public void StartLevel(string levelname)
+    public void StartLevel(Level currentLevel)
     {
+        selectedLevel = currentLevel;
         level_selector.gameObject.SetActive(false);
         // this is not nice: we should not have to be required to tell the player directly that the level is starting
         GameManager.Instance.player.GetComponent<PlayerController>().StartLevel();
-        StartCoroutine(SpawnWave());
+        StartCoroutine(SpawnWave(selectedLevel));
     }
 
     public void NextWave()
     {
-        StartCoroutine(SpawnWave());
+        wave++;
+        StartCoroutine(SpawnWave(selectedLevel));
     }
 
 
-    IEnumerator SpawnWave()
+    IEnumerator SpawnWave(Level level)
     {
         GameManager.Instance.state = GameManager.GameState.COUNTDOWN;
         GameManager.Instance.countdown = 3;
@@ -53,12 +67,15 @@ public class EnemySpawner : MonoBehaviour
             GameManager.Instance.countdown--;
         }
         GameManager.Instance.state = GameManager.GameState.INWAVE;
-        for (int i = 0; i < 10; ++i)
+        //--------------------------------------------------------- all above is fine.
+        for (int i= 0; i < level.spawns.Length; i++)
         {
             yield return SpawnEnemy();
         }
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
         GameManager.Instance.state = GameManager.GameState.WAVEEND;
+        //Increase the wave we are on after clearing all enemies
+       
     }
 
     IEnumerator SpawnEnemy()

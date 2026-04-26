@@ -21,7 +21,7 @@ public class LevelDataLoader : MonoBehaviour
     }
     */
 
-    public List<Level> GetLevels()
+    public static List<Level> GetLevels()
     {
         TextAsset levelJson = Resources.Load<TextAsset>("levels");
 
