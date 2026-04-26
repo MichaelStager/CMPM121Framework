@@ -1,18 +1,22 @@
-using NUnit.Framework;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+
 public class EnemyFactory : MonoBehaviour
 {
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    //Returns a list of enemies
+    public List<Enemy> GetEnemies()
     {
-        JsonConvert.DeserializeObject<Enemy> ("Assets/Resources/enemies.json" );
-    }
+        TextAsset enemyJson = Resources.Load<TextAsset>("enemies");
 
-    // Update is called once per frame
-    void Update()
-    {
+        if (enemyJson == null)
+        {
+            Debug.LogError("Could not find enemies.json in Resources folder.");
+            return null;
+        }
+
+        return JsonConvert.DeserializeObject<List<Enemy>>(enemyJson.text);
+
         
     }
 }

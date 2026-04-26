@@ -1,20 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-[System.Serializable]
+[Serializable]
 public class Enemy : MonoBehaviour
 {
-    
-    string name;
-    int sprite;
-    int hp;
-    int speed;
-    int damage;
-
-
-    Dictionary<string, int> test;
-    private void Start()
-    {
-      
-    }
+    public string name;
+    public int sprite;
+    public int hp;
+    public int speed;
+    public int damage;
 }
