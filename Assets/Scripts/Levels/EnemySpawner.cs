@@ -12,15 +12,23 @@ public class EnemySpawner : MonoBehaviour
     public Image level_selector;
     public GameObject button;
     public GameObject enemy;
-    public SpawnPoint[] SpawnPoints;    
+    public SpawnPoint[] SpawnPoints;
+    List<EnemyData> enimes;
+    List<Level> levels;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameObject selector = Instantiate(button, level_selector.transform);
-        selector.transform.localPosition = new Vector3(0, 130);
-        selector.GetComponent<MenuSelectorController>().spawner = this;
-        selector.GetComponent<MenuSelectorController>().SetLevel("Start");
+        levels = LevelDataLoader.GetLevels();
+        GameObject[] selectors = new GameObject[levels.Count];
+        for (int i=0; i < levels.Count; i++)
+        {
+            selectors[i] = Instantiate(button, level_selector.transform);
+            selectors[i].transform.localPosition = new Vector3(0, (i+1)*130);
+            selectors[i].GetComponent<MenuSelectorController>().spawner = this;
+            selectors[i].GetComponent<MenuSelectorController>().SetLevel(levels[i].name);
+
+        }
     }
 
     // Update is called once per frame
@@ -53,6 +61,7 @@ public class EnemySpawner : MonoBehaviour
             GameManager.Instance.countdown--;
         }
         GameManager.Instance.state = GameManager.GameState.INWAVE;
+        //--------------------------------------------------------- all above is fine.
         for (int i = 0; i < 10; ++i)
         {
             yield return SpawnEnemy();

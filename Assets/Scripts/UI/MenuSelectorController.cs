@@ -1,12 +1,14 @@
-using UnityEngine;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 
 public class MenuSelectorController : MonoBehaviour
 {
     public TextMeshProUGUI label;
     public string level;
     public EnemySpawner spawner;
-    
+    List<Level> levels;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
