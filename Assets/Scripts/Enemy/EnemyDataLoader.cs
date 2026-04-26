@@ -2,10 +2,10 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-public class EnemyFactory : MonoBehaviour
+public class EnemyDataLoader : MonoBehaviour
 {
     //Returns a list of enemies
-    public List<Enemy> GetEnemies()
+    public List<EnemyData> GetEnemies()
     {
         TextAsset enemyJson = Resources.Load<TextAsset>("enemies");
 
@@ -15,8 +15,8 @@ public class EnemyFactory : MonoBehaviour
             return null;
         }
 
-        return JsonConvert.DeserializeObject<List<Enemy>>(enemyJson.text);
+        return JsonConvert.DeserializeObject<List<EnemyData>>(enemyJson.text);
 
-        
     }
+
 }
