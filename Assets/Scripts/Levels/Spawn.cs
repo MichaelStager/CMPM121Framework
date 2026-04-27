@@ -22,5 +22,6 @@ public class Spawn
     public int delay;
     public int[] sequence;
     public string location;
+    public string damage;
 
 }
