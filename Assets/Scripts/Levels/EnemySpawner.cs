@@ -78,7 +78,7 @@ public class EnemySpawner : MonoBehaviour
        
     }
 
-    IEnumerator SpawnEnemy()
+    IEnumerator SpawnEnemy() // was spawnZombie
     {
         SpawnPoint spawn_point = SpawnPoints[Random.Range(0, SpawnPoints.Length)];
         Vector2 offset = Random.insideUnitCircle * 1.8f;
