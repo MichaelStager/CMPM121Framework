@@ -1,7 +1,4 @@
 using UnityEngine;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.IO;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Collections;
@@ -13,98 +10,128 @@ public class EnemySpawner : MonoBehaviour
     public GameObject button;
     public GameObject enemy;
     public SpawnPoint[] SpawnPoints;
+
+    public WaveSummaryUI waveSummaryUI;
+
     int wave;
     List<EnemyData> enimes;
     List<Level> levels;
     Level selectedLevel;
-    
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         wave = 1;
+
         levels = LevelDataLoader.GetLevels();
         enimes = EnemyDataLoader.GetEnemies();
+
+        if (waveSummaryUI != null)
+        {
+            waveSummaryUI.SetSpawner(this);
+        }
+
         GameObject[] selectors = new GameObject[levels.Count];
-        for (int i=0; i < levels.Count; i++)
+
+        for (int i = 0; i < levels.Count; i++)
         {
             selectors[i] = Instantiate(button, level_selector.transform);
-            selectors[i].transform.localPosition = new Vector3(0, (i+1)*130);
+            selectors[i].transform.localPosition = new Vector3(0, (i + 1) * 130);
             selectors[i].GetComponent<MenuSelectorController>().spawner = this;
             selectors[i].GetComponent<MenuSelectorController>().SetLevel(levels[i]);
-
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void StartLevel(Level currentLevel)
     {
         selectedLevel = currentLevel;
         level_selector.gameObject.SetActive(false);
-        // this is not nice: we should not have to be required to tell the player directly that the level is starting
+
         GameManager.Instance.player.GetComponent<PlayerController>().StartLevel();
+
         StartCoroutine(SpawnWave(selectedLevel));
     }
 
     public void NextWave()
     {
         wave++;
+
+        if (wave > selectedLevel.waves)
+        {
+            GameManager.Instance.state = GameManager.GameState.GAMEOVER;
+            Debug.Log("You beat all waves!");
+            return;
+        }
+
         StartCoroutine(SpawnWave(selectedLevel));
     }
-
 
     IEnumerator SpawnWave(Level level)
     {
         GameManager.Instance.state = GameManager.GameState.COUNTDOWN;
         GameManager.Instance.countdown = 3;
+
         for (int i = 3; i > 0; i--)
         {
             yield return new WaitForSeconds(1);
             GameManager.Instance.countdown--;
         }
+
         GameManager.Instance.state = GameManager.GameState.INWAVE;
-        //--------------------------------------------------------- all above is fine.
-        foreach(Spawn spawn in level.spawns)
+
+        GameManager.Instance.StartWaveStats(wave);
+
+        foreach (Spawn spawn in level.spawns)
         {
             EnemyData enemyData = enimes.FirstOrDefault(e => e.name == spawn.enemy);
-            if(enemyData == null)
+
+            if (enemyData == null)
             {
                 Debug.LogError("Enemy type " + spawn.enemy + " not found in enemy data!");
                 continue;
             }
-            //Make a dictionary of variables for the RPN evaluator to use, based on the current wave and the base hp of the enemy type we are spawning.
+
             Dictionary<string, int> variables = new Dictionary<string, int>();
             variables["wave"] = wave;
             variables["base"] = enemyData.hp;
 
             int count = RPNEvaluator.RPNEvaluator.Evaluate(spawn.count, variables);
 
-            for(int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
-               yield return StartCoroutine(SpawnEnemy(spawn, enemyData));
-                float delay = 0.5f; // default delay if not specified or if evaluation fails maybe change this to clean it up and not be a magic number mid code, but who knows.
-                delay = spawn.delay;
-               
+                yield return StartCoroutine(SpawnEnemy(spawn, enemyData));
+
+                float delay = spawn.delay;
+
+                if (delay <= 0)
+                {
+                    delay = 0.5f;
+                }
+
                 yield return new WaitForSeconds(delay);
             }
         }
 
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
+
         GameManager.Instance.state = GameManager.GameState.WAVEEND;
-       
-       
+
+        WaveStats stats = GameManager.Instance.EndWaveStats();
+
+        if (waveSummaryUI != null)
+        {
+            waveSummaryUI.Show(stats);
+        }
+        else
+        {
+            Debug.LogWarning("WaveSummaryUI is missing on EnemySpawner.");
+        }
     }
 
-    IEnumerator SpawnEnemy(Spawn spawn, EnemyData enemyData) // was spawnZombie
+    IEnumerator SpawnEnemy(Spawn spawn, EnemyData enemyData)
     {
         SpawnPoint spawn_point = GetSpawnPoint(spawn.location);
         Vector2 offset = Random.insideUnitCircle * 1.8f;
-                
+
         Vector3 initial_position = spawn_point.transform.position + new Vector3(offset.x, offset.y, 0);
         GameObject new_enemy = Instantiate(enemy, initial_position, Quaternion.identity);
 
@@ -141,8 +168,6 @@ public class EnemySpawner : MonoBehaviour
         yield return null;
     }
 
-
-    //Read this over again.
     SpawnPoint GetSpawnPoint(string location)
     {
         if (string.IsNullOrEmpty(location) || location == "random")
@@ -168,5 +193,4 @@ public class EnemySpawner : MonoBehaviour
         Debug.LogWarning("No spawn point found for location: " + location + ". Using random.");
         return SpawnPoints[Random.Range(0, SpawnPoints.Length)];
     }
-
 }
