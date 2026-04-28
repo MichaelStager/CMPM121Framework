@@ -22,8 +22,9 @@ public class EnemySpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        wave = 0;
+        wave = 1;
         levels = LevelDataLoader.GetLevels();
+        enimes = EnemyDataLoader.GetEnemies();
         GameObject[] selectors = new GameObject[levels.Count];
         for (int i=0; i < levels.Count; i++)
         {
@@ -68,29 +69,104 @@ public class EnemySpawner : MonoBehaviour
         }
         GameManager.Instance.state = GameManager.GameState.INWAVE;
         //--------------------------------------------------------- all above is fine.
-        for (int i= 0; i < level.spawns.Length; i++)
+        foreach(Spawn spawn in level.spawns)
         {
-            yield return SpawnEnemy();
+            EnemyData enemyData = enimes.FirstOrDefault(e => e.name == spawn.enemy);
+            if(enemyData == null)
+            {
+                Debug.LogError("Enemy type " + spawn.enemy + " not found in enemy data!");
+                continue;
+            }
+            //Make a dictionary of variables for the RPN evaluator to use, based on the current wave and the base hp of the enemy type we are spawning.
+            Dictionary<string, int> variables = new Dictionary<string, int>();
+            variables["wave"] = wave;
+            variables["base"] = enemyData.hp;
+
+            int count = RPNEvaluator.RPNEvaluator.Evaluate(spawn.count, variables);
+
+            for(int i = 0; i < count; i++)
+            {
+               yield return StartCoroutine(SpawnEnemy(spawn, enemyData));
+                float delay = 0.5f; // default delay if not specified or if evaluation fails maybe change this to clean it up and not be a magic number mid code, but who knows.
+                delay = spawn.delay;
+               
+                yield return new WaitForSeconds(delay);
+            }
         }
+
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
         GameManager.Instance.state = GameManager.GameState.WAVEEND;
-        //Increase the wave we are on after clearing all enemies
+       
        
     }
 
-    IEnumerator SpawnEnemy()
+    IEnumerator SpawnEnemy(Spawn spawn, EnemyData enemyData) // was spawnZombie
     {
-        SpawnPoint spawn_point = SpawnPoints[Random.Range(0, SpawnPoints.Length)];
+        SpawnPoint spawn_point = GetSpawnPoint(spawn.location);
         Vector2 offset = Random.insideUnitCircle * 1.8f;
                 
         Vector3 initial_position = spawn_point.transform.position + new Vector3(offset.x, offset.y, 0);
         GameObject new_enemy = Instantiate(enemy, initial_position, Quaternion.identity);
 
-        new_enemy.GetComponent<SpriteRenderer>().sprite = GameManager.Instance.enemySpriteManager.Get(0);
+        SpriteRenderer sr = new_enemy.GetComponent<SpriteRenderer>();
         EnemyController en = new_enemy.GetComponent<EnemyController>();
-        en.hp = new Hittable(50, Hittable.Team.MONSTERS, new_enemy);
-        en.speed = 10;
+
+        Dictionary<string, int> variables = new Dictionary<string, int>();
+        variables["wave"] = wave;
+        variables["base"] = enemyData.hp;
+
+        int finalHp = enemyData.hp;
+
+        if (!string.IsNullOrEmpty(spawn.hp))
+        {
+            finalHp = RPNEvaluator.RPNEvaluator.Evaluate(spawn.hp, variables);
+        }
+
+        int finalDamage = enemyData.damage;
+
+        if (!string.IsNullOrEmpty(spawn.damage))
+        {
+            variables["base"] = enemyData.damage;
+            finalDamage = RPNEvaluator.RPNEvaluator.Evaluate(spawn.damage, variables);
+        }
+
+        sr.sprite = GameManager.Instance.enemySpriteManager.Get(enemyData.sprite);
+
+        en.hp = new Hittable(finalHp, Hittable.Team.MONSTERS, new_enemy);
+        en.speed = enemyData.speed;
+        en.damage = finalDamage;
+
         GameManager.Instance.AddEnemy(new_enemy);
-        yield return new WaitForSeconds(0.5f);
+
+        yield return null;
     }
+
+
+    //Read this over again.
+    SpawnPoint GetSpawnPoint(string location)
+    {
+        if (string.IsNullOrEmpty(location) || location == "random")
+        {
+            return SpawnPoints[Random.Range(0, SpawnPoints.Length)];
+        }
+
+        List<SpawnPoint> matchingPoints = new List<SpawnPoint>();
+
+        foreach (SpawnPoint point in SpawnPoints)
+        {
+            if (point.name.ToLower().Contains(location.Replace("random ", "").ToLower()))
+            {
+                matchingPoints.Add(point);
+            }
+        }
+
+        if (matchingPoints.Count > 0)
+        {
+            return matchingPoints[Random.Range(0, matchingPoints.Count)];
+        }
+
+        Debug.LogWarning("No spawn point found for location: " + location + ". Using random.");
+        return SpawnPoints[Random.Range(0, SpawnPoints.Length)];
+    }
+
 }
