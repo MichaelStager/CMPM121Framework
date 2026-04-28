@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class WaveSummaryUI : MonoBehaviour
 {
     public GameObject panel;
-    public Text titleText;
-    public Text statsText;
+    public TMP_Text titleText;
+    public TMP_Text statsText;
     public Button continueButton;
 
     private EnemySpawner spawner;
@@ -13,7 +14,6 @@ public class WaveSummaryUI : MonoBehaviour
     void Start()
     {
         panel.SetActive(false);
-
         continueButton.onClick.AddListener(OnContinueClicked);
     }
 
