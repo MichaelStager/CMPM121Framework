@@ -48,6 +48,7 @@ public class GameManager
 
     public WaveStats currentWaveStats;
 
+    //This is like so bad because this has to be making a dataleak. 
     public void StartWaveStats(int waveNumber)
     {
         currentWaveStats = new WaveStats(waveNumber);

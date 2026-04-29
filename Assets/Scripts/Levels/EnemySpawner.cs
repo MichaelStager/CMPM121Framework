@@ -12,6 +12,7 @@ public class EnemySpawner : MonoBehaviour
     public SpawnPoint[] SpawnPoints;
 
     public WaveSummaryUI waveSummaryUI;
+    public GameEndUI gameEndUI;
 
     int wave;
     List<EnemyData> enimes;
@@ -53,15 +54,23 @@ public class EnemySpawner : MonoBehaviour
 
     public void NextWave()
     {
+        /*
         wave++;
 
         if (selectedLevel.waves > 0 && wave > selectedLevel.waves)
         {
             GameManager.Instance.state = GameManager.GameState.GAMEOVER;
             Debug.Log("You beat all waves!");
+            //create a new class named DisplayGameover
+            //This handles the 
+            //Create a static function that displays win and displays lost, just instansiates a button and makes the text either
+            //You won! or You loose try agian? and the button on both just says reset
             return;
         }
 
+        StartCoroutine(SpawnWave(selectedLevel));
+        */
+        wave++;
         StartCoroutine(SpawnWave(selectedLevel));
     }
 
@@ -134,11 +143,28 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
+        ////////////////////////
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
 
-        GameManager.Instance.state = GameManager.GameState.WAVEEND;
-
         WaveStats stats = GameManager.Instance.EndWaveStats();
+
+        if (selectedLevel.waves > 0 && wave >= selectedLevel.waves)
+        {
+            GameManager.Instance.state = GameManager.GameState.GAMEOVER;
+
+            if (gameEndUI != null)
+            {
+                gameEndUI.ShowWin();
+            }
+            else
+            {
+                Debug.LogWarning("GameEndUI is missing on EnemySpawner.");
+            }
+
+            yield break;
+        }
+
+        GameManager.Instance.state = GameManager.GameState.WAVEEND;
 
         if (waveSummaryUI != null)
         {
