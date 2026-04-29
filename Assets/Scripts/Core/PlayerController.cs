@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
 
     public Unit unit;
 
+    public GameEndUI gameEndUI;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -64,6 +66,13 @@ public class PlayerController : MonoBehaviour
     void Die()
     {
         Debug.Log("You Lost");
+
+        unit.movement = Vector2.zero;
+
+        if (gameEndUI != null)
+        {
+            gameEndUI.ShowLoss();
+        }
     }
 
 }
