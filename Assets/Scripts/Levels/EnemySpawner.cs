@@ -55,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
     {
         wave++;
 
-        if (wave > selectedLevel.waves)
+        if (selectedLevel.waves > 0 && wave > selectedLevel.waves)
         {
             GameManager.Instance.state = GameManager.GameState.GAMEOVER;
             Debug.Log("You beat all waves!");
@@ -96,15 +96,38 @@ public class EnemySpawner : MonoBehaviour
 
             int count = RPNEvaluator.RPNEvaluator.Evaluate(spawn.count, variables);
 
-            for (int i = 0; i < count; i++)
+            float delay = spawn.delay;
+
+            if (delay <= 0)
             {
-                yield return StartCoroutine(SpawnEnemy(spawn, enemyData));
+                delay = 0.5f;
+            }
 
-                float delay = spawn.delay;
+            int spawnedSoFar = 0;
+            int sequenceIndex = 0;
 
-                if (delay <= 0)
+            while (spawnedSoFar < count)
+            {
+                int batchSize = 1;
+
+                if (spawn.sequence != null && spawn.sequence.Length > 0)
                 {
-                    delay = 0.5f;
+                    batchSize = spawn.sequence[sequenceIndex];
+
+                    sequenceIndex++;
+
+                    if (sequenceIndex >= spawn.sequence.Length)
+                    {
+                        sequenceIndex = 0;
+                    }
+                }
+
+                batchSize = Mathf.Min(batchSize, count - spawnedSoFar);
+
+                for (int i = 0; i < batchSize; i++)
+                {
+                    yield return StartCoroutine(SpawnEnemy(spawn, enemyData));
+                    spawnedSoFar++;
                 }
 
                 yield return new WaitForSeconds(delay);
@@ -126,6 +149,7 @@ public class EnemySpawner : MonoBehaviour
             Debug.LogWarning("WaveSummaryUI is missing on EnemySpawner.");
         }
     }
+
 
     IEnumerator SpawnEnemy(Spawn spawn, EnemyData enemyData)
     {
