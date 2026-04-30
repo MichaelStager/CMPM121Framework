@@ -23,6 +23,12 @@
         "count": "wave 5 / 1 wave 5 % - *",
         "hp": "100 25 wave * +",
         "location": "random bone"
+      },
+      {
+        "enemy": "Yoshi",
+        "count": "10",
+        "hp": "100",
+        "location":"random bone"
       }
     ]
   },

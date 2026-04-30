@@ -4,7 +4,7 @@
        "sprite": 0,
        "hp": 20,
        "speed": 5,
-       "damage": 5
+       "damage": 10
    },
    {
        "name": "skeleton",
