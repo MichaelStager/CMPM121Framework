@@ -11,7 +11,7 @@ public class Debugger : MonoBehaviour
     {
      enimes = EnemyDataLoader.GetEnemies();
      levels = LevelDataLoader.GetLevels();
-        Debug.Log(levels[1].spawns[1].sequence[1]);
+       
         
     }
 

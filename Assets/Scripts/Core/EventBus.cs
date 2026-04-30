@@ -21,4 +21,8 @@ public class EventBus
         OnDamage?.Invoke(where, dmg, target);
     }
 
+    public void clear()
+    {
+        OnDamage = null;
+    }
 }

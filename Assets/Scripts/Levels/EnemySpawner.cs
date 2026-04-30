@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
     public GameEndUI gameEndUI;
 
     int wave;
-    List<EnemyData> enimes;
+    List<EnemyData> enemies;
     List<Level> levels;
     Level selectedLevel;
 
@@ -24,7 +24,7 @@ public class EnemySpawner : MonoBehaviour
         wave = 1;
 
         levels = LevelDataLoader.GetLevels();
-        enimes = EnemyDataLoader.GetEnemies();
+        enemies = EnemyDataLoader.GetEnemies();
 
         if (waveSummaryUI != null)
         {
@@ -54,22 +54,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void NextWave()
     {
-        /*
-        wave++;
-
-        if (selectedLevel.waves > 0 && wave > selectedLevel.waves)
-        {
-            GameManager.Instance.state = GameManager.GameState.GAMEOVER;
-            Debug.Log("You beat all waves!");
-            //create a new class named DisplayGameover
-            //This handles the 
-            //Create a static function that displays win and displays lost, just instansiates a button and makes the text either
-            //You won! or You loose try agian? and the button on both just says reset
-            return;
-        }
-
-        StartCoroutine(SpawnWave(selectedLevel));
-        */
+       
         wave++;
         StartCoroutine(SpawnWave(selectedLevel));
     }
@@ -91,7 +76,7 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (Spawn spawn in level.spawns)
         {
-            EnemyData enemyData = enimes.FirstOrDefault(e => e.name == spawn.enemy);
+            EnemyData enemyData = enemies.FirstOrDefault(e => e.name == spawn.enemy);
 
             if (enemyData == null)
             {
