@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GameManager">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="GameManager.GameState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Core\GameManager.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ABIAQEAIAAQAABAAACAAAAABBAAAAAQFQAgCAQAIAAA=</HashCode>
+      <FileName>Assets\Scripts\Core\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerController">
+    <Position X="13" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQQAAAAASAgBACgAAAAAAAAAAAAAQAAAABAAIAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Core\PlayerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WaveStats">
+    <Position X="14.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAACBAAAAAEAAAAAgACAAAAAAAAAAQACJAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Core\WaveStats.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyData">
+    <Position X="7.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAABAEAQAAAABAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\EnemyData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyDataLoader">
+    <Position X="13" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Enemy\EnemyDataLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemySpawner">
+    <Position X="11.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAARAABAACAAAAAAAAAJIAAAAAECAAAAAggIAIAQEAI=</HashCode>
+      <FileName>Assets\Scripts\Levels\EnemySpawner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Level">
+    <Position X="7.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAEAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Levels\Level.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LevelDataLoader">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Levels\LevelDataLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Spawn">
+    <Position X="7.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAABAAAAAgCAAAAAAAAAQBAAAAAAAI=</HashCode>
+      <FileName>Assets\Scripts\Levels\Spawn.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpawnPoint">
+    <Position X="14.75" Y="6.25" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="SpawnPoint.SpawnName" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\Levels\SpawnPoint.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Levels\SpawnPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameEndUI">
+    <Position X="13" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAgAAAACAAQAAAAQABAAAAAAAQAIAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\GameEndUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RewardScreenManager">
+    <Position X="7.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\RewardScreenManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WaveSummaryUI">
+    <Position X="16.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAACAAAIgAEAAAAAAAAAAEAAEAAABAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\WaveSummaryUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthBar">
+    <Position X="9.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAACAAAAAAAAAAAAAACBEAgAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\HealthBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnemyController">
+    <Position X="11.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgQAQAAAACAAgAAgIAAAAAAAAAAAAQAIAABAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Movement\EnemyController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MenuSelectorController">
+    <Position X="6" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQQBAAAACAAABAAAAAQAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\UI\MenuSelectorController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
