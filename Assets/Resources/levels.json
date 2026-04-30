@@ -25,9 +25,9 @@
         "location": "random bone"
       },
       {
-        "enemy": "Yoshi",
-        "count": "10",
-        "hp": "100",
+        "enemy": "yoshi",
+        "count": "1",
+        "hp": "1000",
         "location":"random bone"
       }
     ]

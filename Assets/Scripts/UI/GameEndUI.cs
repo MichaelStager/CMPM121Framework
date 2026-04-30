@@ -36,6 +36,7 @@ public class GameEndUI : MonoBehaviour
 
     public void ReturnToStart()
     {
+        EventBus.Instance.clear();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
