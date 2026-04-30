@@ -73,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
         GameManager.Instance.state = GameManager.GameState.INWAVE;
 
         GameManager.Instance.StartWaveStats(wave);
-
+        List<SpawnRunTimeData> activeSpawns = new List<SpawnRunTimeData>();
         foreach (Spawn spawn in level.spawns)
         {
             EnemyData enemyData = enemies.FirstOrDefault(e => e.name == spawn.enemy);
@@ -88,47 +88,45 @@ public class EnemySpawner : MonoBehaviour
             variables["wave"] = wave;
             variables["base"] = enemyData.hp;
 
-            int count = RPNEvaluator.RPNEvaluator.Evaluate(spawn.count, variables);
+            int totalCount = RPNEvaluator.RPNEvaluator.Evaluate(spawn.count, variables);
 
-            float delay = spawn.delay;
-
-            if (delay <= 0)
+            if (totalCount <= 0)
             {
-                delay = 0.5f;
+                continue;
             }
 
-            int spawnedSoFar = 0;
-            int sequenceIndex = 0;
+            activeSpawns.Add(new SpawnRunTimeData(spawn, enemyData, totalCount));
+        }
 
-            while (spawnedSoFar < count)
+        while (activeSpawns.Any(spawnData => !spawnData.IsDone()))
+        {
+            float longestDelay = 0.5f;
+
+            foreach (SpawnRunTimeData spawnData in activeSpawns)
             {
-                int batchSize = 1;
-
-                if (spawn.sequence != null && spawn.sequence.Length > 0)
+                if (spawnData.IsDone())
                 {
-                    batchSize = spawn.sequence[sequenceIndex];
-
-                    sequenceIndex++;
-
-                    if (sequenceIndex >= spawn.sequence.Length)
-                    {
-                        sequenceIndex = 0;
-                    }
+                    continue;
                 }
 
-                batchSize = Mathf.Min(batchSize, count - spawnedSoFar);
+                int batchSize = spawnData.GetNextBatchSize();
+                batchSize = Mathf.Min(batchSize, spawnData.totalCount - spawnData.spawnedSoFar);
 
                 for (int i = 0; i < batchSize; i++)
                 {
-                    yield return StartCoroutine(SpawnEnemy(spawn, enemyData));
-                    spawnedSoFar++;
+                    yield return StartCoroutine(SpawnEnemy(spawnData.spawn, spawnData.enemyData));
+                    spawnData.spawnedSoFar++;
                 }
 
-                yield return new WaitForSeconds(delay);
+                if (spawnData.spawn.delay > longestDelay)
+                {
+                    longestDelay = spawnData.spawn.delay;
+                }
             }
+
+            yield return new WaitForSeconds(longestDelay);
         }
 
-        //////////////////////// Dealing with new logic where if its the last round don't show the endWaveStats ///////////////////////////
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
 
         WaveStats stats = GameManager.Instance.EndWaveStats();
@@ -160,7 +158,6 @@ public class EnemySpawner : MonoBehaviour
             Debug.LogWarning("WaveSummaryUI is missing on EnemySpawner.");
         }
     }
-
 
     IEnumerator SpawnEnemy(Spawn spawn, EnemyData enemyData)
     {
