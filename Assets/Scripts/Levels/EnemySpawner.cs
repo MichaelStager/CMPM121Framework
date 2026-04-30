@@ -36,7 +36,7 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < levels.Count; i++)
         {
             selectors[i] = Instantiate(button, level_selector.transform);
-            selectors[i].transform.localPosition = new Vector3(0, (i + 1) * 130);
+            selectors[i].transform.localPosition = new Vector3(0, (i) * 130);
             selectors[i].GetComponent<MenuSelectorController>().spawner = this;
             selectors[i].GetComponent<MenuSelectorController>().SetLevel(levels[i]);
         }
@@ -143,7 +143,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        ////////////////////////
+        //////////////////////// Dealing with new logic where if its the last round don't show the endWaveStats ///////////////////////////
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
 
         WaveStats stats = GameManager.Instance.EndWaveStats();
