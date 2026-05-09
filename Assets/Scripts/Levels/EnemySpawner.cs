@@ -6,20 +6,20 @@ using System.Linq;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public Image level_selector;
-    public GameObject button;
-    public GameObject enemy;
+    public Image level_selector; //Moved to different class
+    public GameObject button;   //Moved to different class
+    public GameObject enemy;    
     public SpawnPoint[] SpawnPoints;
 
-    public WaveSummaryUI waveSummaryUI;
-    public GameEndUI gameEndUI;
+    public WaveSummaryUI waveSummaryUI; //Moved to different class
+    public GameEndUI gameEndUI;         //Moved to different class
 
-    int wave;
-    List<EnemyData> enemies;
-    List<Level> levels;
-    Level selectedLevel;
+    int wave;   //Moved to different class
+    List<EnemyData> enemies;    //Moved to different class
+    List<Level> levels; //Moved to different class
+    Level selectedLevel;    //Moved to different class
 
-    void Start()
+    void Start() //Moved to different Class
     {
         wave = 1;
 
