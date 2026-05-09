@@ -8,7 +8,10 @@ public class ProjectileManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameManager.Instance.projectileManager = this;
+        if (GameManager.Instance.projectileManager == null)
+        {
+            GameManager.Instance.projectileManager = this;
+        }    
     }
 
     // Update is called once per frame
@@ -33,21 +36,20 @@ public class ProjectileManager : MonoBehaviour
      //   new_projectile.GetComponent<ProjectileController>().SetLifetime(lifetime);
    // }
 
+    // Might be a better way to do this, I might jsut turn it into a switch statement for now.
     public ProjectileMovement MakeMovement(string name, float speed)
     {
-        if (name == "straight")
+        switch(name)
         {
-            return new StraightProjectileMovement(speed);
+            case "straight":
+                return new StraightProjectileMovement(speed);
+            case "homing":
+                return new HomingProjectileMovement(speed);
+            case "spiraling":
+                return new SpiralingProjectileMovement(speed);
+            default:
+                return null;
         }
-        if (name == "homing")
-        {
-            return new HomingProjectileMovement(speed);
-        }
-        if (name == "spiraling")
-        {
-            return new SpiralingProjectileMovement(speed);
-        }
-        return null;
     }
 
 }
