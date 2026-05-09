@@ -6,16 +6,15 @@ using System.Linq;
 
 public class WaveManager : MonoBehaviour
 {
-    public Image level_selector; //Moved to different class
-    public GameObject button;   //Moved to different class
+    public Image level_selector; 
+    public GameObject button;   
+    public WaveSummaryUI waveSummaryUI; 
+    public GameEndUI gameEndUI;        
 
-    public WaveSummaryUI waveSummaryUI; //Moved to different class
-    public GameEndUI gameEndUI;         //Moved to different class
-
-    int wave;   //Moved to different class
-    List<EnemyData> enemies;    //Moved to different class
-    List<Level> levels; //Moved to different class
-    Level selectedLevel;    //Moved to different class
+    int wave;   
+    List<EnemyData> enemies;    
+    List<Level> levels; 
+    Level selectedLevel;    
 
     public EnemySpawner enemySpawner;
 
@@ -56,7 +55,7 @@ public class WaveManager : MonoBehaviour
 
     public void NextWave()
     {
-       
+
         wave++;
         StartCoroutine(SpawnWave(selectedLevel));
     }
