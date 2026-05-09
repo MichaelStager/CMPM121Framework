@@ -1,8 +1,10 @@
-using UnityEngine;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
+using UnityEngine;
 
+[Serializable]
 public class Spell 
 {
     public float last_cast;
