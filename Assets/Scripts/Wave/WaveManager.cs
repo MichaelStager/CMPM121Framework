@@ -17,7 +17,7 @@ public class WaveManager : MonoBehaviour
     List<Level> levels; //Moved to different class
     Level selectedLevel;    //Moved to different class
 
-    public EnemySpawner enemySpawnerReference;
+    public EnemySpawner enemySpawner;
 
     void Start()
     {
@@ -56,7 +56,7 @@ public class WaveManager : MonoBehaviour
 
     public void NextWave()
     {
-
+       
         wave++;
         StartCoroutine(SpawnWave(selectedLevel));
     }
@@ -116,7 +116,7 @@ public class WaveManager : MonoBehaviour
 
                 for (int i = 0; i < batchSize; i++)
                 {
-                    yield return StartCoroutine(SpawnEnemy(spawnData.spawn, spawnData.enemyData));
+                    yield return StartCoroutine(enemySpawner.SpawnEnemy(spawnData.spawn, spawnData.enemyData, wave));
                     spawnData.spawnedSoFar++;
                 }
 
