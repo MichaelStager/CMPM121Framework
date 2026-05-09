@@ -2521,13 +2521,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: efde5d11a0c0a9e43921697e98a09200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level_selector: {fileID: 1115058368}
-  button: {fileID: 6791571272867747119, guid: 47865e4d0d1669541a3aa2992225a687, type: 3}
   enemy: {fileID: 1832418719708313566, guid: bebfa21247182184d92ab200b93e6cf0, type: 3}
   SpawnPoints:
   - {fileID: 956873992}
@@ -2537,8 +2535,6 @@ MonoBehaviour:
   - {fileID: 2073311049}
   - {fileID: 1577913788}
   - {fileID: 587991943}
-  waveSummaryUI: {fileID: 280528181}
-  gameEndUI: {fileID: 573926564}
 --- !u!1 &532755679
 GameObject:
   m_ObjectHideFlags: 0
@@ -6725,6 +6721,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectiles:
   - {fileID: 5974830082219523945, guid: f34a30cd4de40054fbf581a2defa05b3, type: 3}
+--- !u!114 &1803653861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803653849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b81383d4b02cd48a5c97efd21c4c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaveManager
+  level_selector: {fileID: 1115058368}
+  button: {fileID: 6791571272867747119, guid: 47865e4d0d1669541a3aa2992225a687, type: 3}
+  waveSummaryUI: {fileID: 280528181}
+  gameEndUI: {fileID: 573926564}
+  enemySpawner: {fileID: 1803653862}
+--- !u!114 &1803653862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803653849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efde5d11a0c0a9e43921697e98a09200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
+  enemy: {fileID: 1832418719708313566, guid: bebfa21247182184d92ab200b93e6cf0, type: 3}
+  SpawnPoints:
+  - {fileID: 956873992}
+  - {fileID: 1677496371}
+  - {fileID: 1428830197}
+  - {fileID: 372856468}
+  - {fileID: 2073311049}
+  - {fileID: 1577913788}
+  - {fileID: 587991943}
 --- !u!1 &1860547073
 GameObject:
   m_ObjectHideFlags: 0
@@ -57686,6 +57720,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2107732465084047900, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1803653855}
+    - targetCorrespondingSourceObject: {fileID: 2107732465084047900, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1803653862}
+    - targetCorrespondingSourceObject: {fileID: 2107732465084047900, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1803653861}
   m_SourcePrefab: {fileID: 100100000, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -9,7 +9,7 @@ public class WaveSummaryUI : MonoBehaviour
     public TMP_Text statsText;
     public Button continueButton;
 
-    private EnemySpawner spawner;
+    private WaveManager spawner;
 
     void Start()
     {
@@ -17,7 +17,7 @@ public class WaveSummaryUI : MonoBehaviour
         continueButton.onClick.AddListener(OnContinueClicked);
     }
 
-    public void SetSpawner(EnemySpawner enemySpawner)
+    public void SetSpawner(WaveManager enemySpawner)
     {
         spawner = enemySpawner;
     }
