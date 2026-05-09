@@ -9,6 +9,15 @@ public class Spell
     public SpellCaster owner;
     public Hittable.Team team;
 
+    public string name;
+    public string description;
+    Damage damage;
+    public int icon;
+    public int mana_cost;
+    float coolDown;
+    Projectile projectile = new Projectile();
+    Projectile secondary_projectile = null;
+
     public Spell(SpellCaster owner)
     {
         this.owner = owner;
@@ -16,27 +25,27 @@ public class Spell
 
     public string GetName()
     {
-        return "Bolt";
+        return name;
     }
 
     public int GetManaCost()
     {
-        return 10;
+        return mana_cost;
     }
 
     public int GetDamage()
     {
-        return 100;
+        return damage.amount;
     }
 
     public float GetCooldown()
     {
-        return 0.75f;
+        return coolDown;
     }
 
     public virtual int GetIcon()
     {
-        return 0;
+        return icon;
     }
 
     public bool IsReady()
