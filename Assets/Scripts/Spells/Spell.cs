@@ -56,7 +56,7 @@ public class Spell
     public virtual IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
     {
         this.team = team;
-        GameManager.Instance.projectileManager.CreateProjectile(0, "straight", where, target - where, 15f, OnHit);
+        GameManager.Instance.projectileManager.CreateProjectile(projectile, where, target - where, OnHit);
         yield return new WaitForEndOfFrame();
     }
 
@@ -64,7 +64,7 @@ public class Spell
     {
         if (other.team != team)
         {
-            other.Damage(new Damage(GetDamage(), Damage.Type.ARCANE));
+            other.Damage(damage);
         }
 
     }

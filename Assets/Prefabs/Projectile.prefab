@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8065998910582146717}
   - component: {fileID: 6755773831259233451}
   m_Layer: 0
-  m_Name: ArcaneBolt
+  m_Name: Projectile
   m_TagString: projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
