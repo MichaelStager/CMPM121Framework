@@ -8,7 +8,7 @@ public class SpellCaster
     public int max_mana;
     public int mana_reg;
     public Hittable.Team team;
-    public Spell spell;
+    public ISpell spell;
 
     public IEnumerator ManaRegeneration()
     {
