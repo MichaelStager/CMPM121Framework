@@ -1,21 +1,13 @@
-using UnityEngine;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-
-
-public class SpellBuilder 
+public class SpellBuilder
 {
-
-    public Spell Build(SpellCaster owner)
+    public ISpell Build(SpellCaster owner)
     {
-        return new Spell(owner);
+        ISpell spell = new BaseSpell(owner);
+        spell = new DamageAmpModifier(spell, 1.5f, 1.5f);
+        return spell;
     }
 
-   
     public SpellBuilder()
-    {        
+    {
     }
-
 }

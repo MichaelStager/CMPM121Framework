@@ -49,23 +49,33 @@ public class BaseSpell : ISpell
         Team = team;
         LastCast = Time.time;
 
+        int resolvedDamage = GetDamage(); // important: snapshot at cast time
+
         GameManager.Instance.projectileManager.CreateProjectile(
-            0,                  // sprite index
-            "straight",         // trajectory
-            where,              // origin
-            target - where,     // direction vector
-            15f,                // speed
-            OnHit               // collision callback
+            0,
+            "straight",
+            where,
+            target - where,
+            15f,
+            (other, impact) => OnHitWithDamage(other, impact, resolvedDamage)
         );
 
         yield return new WaitForEndOfFrame();
     }
 
-    protected virtual void OnHit(Hittable other, Vector3 impact)
+    protected virtual void OnHitWithDamage(Hittable other, Vector3 impact, int damage)
     {
         if (other.team != Team)
         {
-            other.Damage(new Damage(GetDamage(), Damage.Type.ARCANE));
+            other.Damage(new Damage(damage, Damage.Type.ARCANE));
         }
     }
+
+    //protected virtual void OnHit(Hittable other, Vector3 impact)
+    //{
+    //    if (other.team != Team)
+    //    {
+    //        other.Damage(new Damage(GetDamage(), Damage.Type.ARCANE));
+    //    }
+    //}
 }
