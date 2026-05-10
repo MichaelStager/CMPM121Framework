@@ -49,7 +49,7 @@ public class BaseSpell : ISpell
         Team = team;
         LastCast = Time.time;
 
-        int resolvedDamage = GetDamage(); // important: snapshot at cast time
+        int resolvedDamage = GetDamage();
 
         GameManager.Instance.projectileManager.CreateProjectile(
             0,
@@ -70,12 +70,4 @@ public class BaseSpell : ISpell
             other.Damage(new Damage(damage, Damage.Type.ARCANE));
         }
     }
-
-    //protected virtual void OnHit(Hittable other, Vector3 impact)
-    //{
-    //    if (other.team != Team)
-    //    {
-    //        other.Damage(new Damage(GetDamage(), Damage.Type.ARCANE));
-    //    }
-    //}
 }
