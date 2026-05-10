@@ -8,9 +8,9 @@ using System.Collections.Generic;
 public class SpellBuilder 
 {
 
-    public Spell Build(SpellCaster owner)
+    public TestSpell Build(SpellCaster owner)
     {
-        return new Spell(owner);
+        return new TestSpell(owner);
     }
 
    
