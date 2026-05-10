@@ -6759,6 +6759,18 @@ MonoBehaviour:
   - {fileID: 2073311049}
   - {fileID: 1577913788}
   - {fileID: 587991943}
+--- !u!114 &1803653863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803653849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fa1447526719b241b4c58cb975eb67d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpellBag
 --- !u!1 &1860547073
 GameObject:
   m_ObjectHideFlags: 0
@@ -57726,6 +57738,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2107732465084047900, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1803653861}
+    - targetCorrespondingSourceObject: {fileID: 2107732465084047900, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1803653863}
   m_SourcePrefab: {fileID: 100100000, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class TestSpell : Spell
+public class TestSpell1 : Spell
 {
-    public TestSpell(SpellCaster owner) : base(owner)
+    public TestSpell1(SpellCaster owner) : base(owner)
     {
     }
 
     public override string GetName()
     {
-        return "Test";
+        return "Test1";
     }
 
     public override int GetManaCost()
