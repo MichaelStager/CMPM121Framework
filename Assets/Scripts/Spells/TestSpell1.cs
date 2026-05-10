@@ -13,7 +13,7 @@ public class TestSpell1 : Spell
 
     public override int GetManaCost()
     {
-        return 50;
+        return 3;
     }
 
     public override int GetDamage()
