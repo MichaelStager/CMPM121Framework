@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+//Spell interface
 public class BaseSpell : ISpell
 {
     public float LastCast { get; set; }
