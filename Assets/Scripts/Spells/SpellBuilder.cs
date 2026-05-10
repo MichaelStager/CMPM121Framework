@@ -4,7 +4,9 @@ public class SpellBuilder
     {
         ISpell spell = new BaseSpell(owner);
         spell = new  DamageAmpModifier(spell, 5f, 5f);
+        spell = new SplitterModifier(spell, 1, 15f, 1f);
         spell = new DoublerModifier(spell,0.15f,.5f);
+       
 
         return spell;
     }
