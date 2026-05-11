@@ -11,6 +11,8 @@ public class WaveSummaryUI : MonoBehaviour
 
     private WaveManager spawner;
 
+    public PlayerController player;
+
     void Start()
     {
         panel.SetActive(false);
@@ -32,7 +34,8 @@ public class WaveSummaryUI : MonoBehaviour
             "Enemies defeated: " + stats.enemiesKilled + "\n" +
             "Damage dealt: " + stats.damageDealt + "\n" +
             "Damage taken: " + stats.damageTaken + "\n" +
-            "Time spent: " + stats.TimeSpent.ToString("0.0") + " seconds";
+            "Time spent: " + stats.TimeSpent.ToString("0.0") + " seconds\n\n" +
+            "Reward: Arcane Blast";
     }
 
     public void Hide()
@@ -44,9 +47,26 @@ public class WaveSummaryUI : MonoBehaviour
     {
         Hide();
 
+        GiveSpellReward();
         if (spawner != null)
         {
             spawner.NextWave();
+        }
+    }
+
+    private void GiveSpellReward()
+    {
+        if (player == null || player.spellcaster == null)
+        {
+            return;
+        }
+
+        ISpell rewardSpell = new SpellBuilder().Build(player.spellcaster);
+        bool added = player.spellcaster.AddSpell(rewardSpell);
+
+        if (added && player.spellui != null)
+        {
+            player.spellui.Refresh();
         }
     }
 }

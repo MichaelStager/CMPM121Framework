@@ -1208,6 +1208,7 @@ MonoBehaviour:
   titleText: {fileID: 482700287}
   statsText: {fileID: 14747072}
   continueButton: {fileID: 123171886}
+  player: {fileID: 1718273952}
 --- !u!114 &280528182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6230,7 +6231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthui: {fileID: 765025204}
   manaui: {fileID: 71109453}
-  spellui: {fileID: 2085212185}
+  spellui: {fileID: 1982188287}
   speed: 5
   unit: {fileID: 0}
   gameEndUI: {fileID: 573926564}
@@ -6737,6 +6738,7 @@ MonoBehaviour:
   button: {fileID: 6791571272867747119, guid: 47865e4d0d1669541a3aa2992225a687, type: 3}
   waveSummaryUI: {fileID: 280528181}
   gameEndUI: {fileID: 573926564}
+  wave: 0
   enemySpawner: {fileID: 1803653862}
 --- !u!114 &1803653862
 MonoBehaviour:
