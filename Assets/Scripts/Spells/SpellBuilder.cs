@@ -1,35 +1,17 @@
-using UnityEngine;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System;
-
 public class SpellBuilder
 {
-
-    public Spell Build(SpellCaster owner)
+    public ISpell Build(SpellCaster owner)
     {
-        
-        return GetRandomSpell(owner);
+        ISpell spell = new BaseSpell(owner);
+        spell = new  DamageAmpModifier(spell, 5f, 5f);
+        spell = new SplitterModifier(spell, 1, 15f, 1f);
+        spell = new DoublerModifier(spell,0.15f,.5f);
+       
+
+        return spell;
     }
 
-   
     public SpellBuilder()
-    {        
-    }
-
-    //Is working with generating a random number betwen 0,2
-    public static Spell GetRandomSpell(SpellCaster owner)
     {
-        int pick = UnityEngine.Random.Range(0, 3);
-        switch (pick)
-        {
-            case 0: return new Spell(owner);
-            case 1: return new TestSpell1(owner);
-            case 2: return new TestSpell2(owner);
-            default: return new Spell(owner);
-        }
     }
-
 }

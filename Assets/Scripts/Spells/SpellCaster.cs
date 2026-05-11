@@ -8,9 +8,7 @@ public class SpellCaster
     public int max_mana;
     public int mana_reg;
     public Hittable.Team team;
-    public Spell spell; //Turn into a list of spells aquired
-                        //Create a activeSpell Spell so we know which spell the player is using
-                        //Create a method for handling the changing of an active spell
+    public ISpell spell;
 
     public IEnumerator ManaRegeneration()
     {
@@ -29,7 +27,6 @@ public class SpellCaster
         this.mana_reg = mana_reg;
         this.team = team;
         spell = new SpellBuilder().Build(this);
-        
     }
 
     public IEnumerator Cast(Vector3 where, Vector3 target)
@@ -40,16 +37,6 @@ public class SpellCaster
             yield return spell.Cast(where, target, team);
         }
         yield break;
-    }
-
-    public void addSpell(Spell s)
-    {
-
-    }
-
-    public void removeSpell(int index)
-    {
-
     }
 
 }
