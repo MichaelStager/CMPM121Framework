@@ -19,6 +19,11 @@ public class SpellBuilder
             float manaMult = ModifierValueResolver.EvalFloat(damageAmp.mana_multiplier, vars, 1.5f);
             spell = new DamageAmpModifier(spell, dmgMult, manaMult);
         }
+        if (ModifierLoader.TryGet("speed_amp", out var speedAmp))
+        {
+            float speedMult = ModifierValueResolver.EvalFloat(speedAmp.speed_multiplier, vars, 1.5f);
+            spell = new SpeedModifier(spell, speedMult, 1f);
+        }
 
         if (ModifierLoader.TryGet("splitter", out var splitter))
         {
@@ -33,6 +38,7 @@ public class SpellBuilder
             float manaMult = ModifierValueResolver.EvalFloat(doubler.mana_multiplier, vars, 2.0f);
             spell = new DoublerModifier(spell, delay, manaMult);
         }
+        
         return spell;
     }
 }

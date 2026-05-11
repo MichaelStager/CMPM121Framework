@@ -9,7 +9,7 @@
    "speed_amp": {
        "name": "speed-amplified",
        "description": "Faster projectile speed",
-       "speed_multiplier": "1.75",
+       "speed_multiplier": "2.5",
        "weight" : 2
    },
    "doubler": {

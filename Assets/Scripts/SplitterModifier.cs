@@ -38,6 +38,7 @@ public class SplitterModifier : SpellModifier
             baseDir = Vector3.right; // fallback
 
         int resolvedDamage = GetDamage();
+        float speed = GetProjectileSpeed();
 
         // fire from -N ... 0 ... +N
         for (int i = -extraProjectilesPerSide; i <= extraProjectilesPerSide; i++)
@@ -49,7 +50,7 @@ public class SplitterModifier : SpellModifier
                 "straight",
                 where,
                 dir,      // direction
-                15f,      // speed
+                speed,      // speed
                 (other, impact) =>
                 {
                     if (other.team != team)

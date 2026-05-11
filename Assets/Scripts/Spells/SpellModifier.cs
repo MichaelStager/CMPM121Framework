@@ -27,6 +27,7 @@ public abstract class SpellModifier : ISpell
     public virtual int GetManaCost() => inner.GetManaCost();
     public virtual int GetDamage() => inner.GetDamage();
     public virtual float GetCooldown() => inner.GetCooldown();
+    public virtual float GetProjectileSpeed() => inner.GetProjectileSpeed();
 
     // Forward behavior
     public virtual bool IsReady() => inner.IsReady();

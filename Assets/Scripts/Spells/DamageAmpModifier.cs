@@ -29,13 +29,14 @@ public class DamageAmpModifier : SpellModifier
         LastCast = Time.time;
 
         int resolvedDamage = GetDamage();
+        float speed = GetProjectileSpeed();
 
         GameManager.Instance.projectileManager.CreateProjectile(
             0,
             "straight",
             where,
             target - where,
-            15f,
+            speed,
             (other, impact) =>
             {
                 if (other.team != team)
