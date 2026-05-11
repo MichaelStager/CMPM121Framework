@@ -1208,7 +1208,7 @@ MonoBehaviour:
   titleText: {fileID: 482700287}
   statsText: {fileID: 14747072}
   continueButton: {fileID: 123171886}
-  player: {fileID: 1718273952}
+  player: {fileID: 0}
 --- !u!114 &280528182
 MonoBehaviour:
   m_ObjectHideFlags: 0

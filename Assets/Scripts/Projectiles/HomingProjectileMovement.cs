@@ -7,7 +7,7 @@ public class HomingProjectileMovement : ProjectileMovement
     public HomingProjectileMovement(float speed) : base(speed)
     {
         angle = float.NaN;
-        turn_rate = 0.25f;
+        turn_rate = 1f; // imma change this rq
     }
 
     public override void Movement(Transform transform)

@@ -14,6 +14,13 @@ public class SpellBuilder
             { "wave", 1 }, // adjust member if needed, hard coded number for now but we will need to get the wave number later.
             { "power", 0f } // replace with actual player power stat when available
         };
+        if (ModifierLoader.TryGet("homing", out var homing))
+        {
+            float dmgMult = ModifierValueResolver.EvalFloat(homing.damage_multiplier, vars, 0.75f);
+            int manaAdd = Mathf.RoundToInt(ModifierValueResolver.EvalFloat(homing.mana_adder, vars, 10f));
+
+            spell = new HomingModifier(spell, dmgMult, manaAdd);
+        }
 
         if (ModifierLoader.TryGet("damage_amp", out var damageAmp))
         {
@@ -39,13 +46,6 @@ public class SpellBuilder
             float delay = ModifierValueResolver.EvalFloat(doubler.delay, vars, 0.15f);
             float manaMult = ModifierValueResolver.EvalFloat(doubler.mana_multiplier, vars, 2.0f);
             spell = new DoublerModifier(spell, delay, manaMult);
-        }
-        if (ModifierLoader.TryGet("homing", out var homing))
-        {
-            float dmgMult = ModifierValueResolver.EvalFloat(homing.damage_multiplier, vars, 0.75f);
-            int manaAdd = Mathf.RoundToInt(ModifierValueResolver.EvalFloat(homing.mana_adder, vars, 10f));
-
-            spell = new HomingModifier(spell, dmgMult, manaAdd);
         }
 
         return spell;
