@@ -4,14 +4,14 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
 
-public class WaveManager : MonoBehaviour
+public  class WaveManager : MonoBehaviour
 {
     public Image level_selector; 
     public GameObject button;   
     public WaveSummaryUI waveSummaryUI; 
     public GameEndUI gameEndUI;        
 
-    int wave;   
+    public int wave;   
     List<EnemyData> enemies;    
     List<Level> levels; 
     Level selectedLevel;    
