@@ -13,6 +13,8 @@ public class SpeedModifier : SpellModifier
         this.manaMultiplier = manaMultiplier;
     }
 
+    public override string GetProjectileTrajectory() => inner.GetProjectileTrajectory();
+
     public override int GetManaCost()
     {
         return Mathf.RoundToInt(inner.GetManaCost() * manaMultiplier);

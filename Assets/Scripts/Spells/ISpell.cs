@@ -11,6 +11,7 @@ public interface ISpell
     int GetDamage();
     float GetCooldown();
     float GetProjectileSpeed();
+    string GetProjectileTrajectory();
 
     // Runtime state
     float LastCast { get; set; }

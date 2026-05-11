@@ -47,7 +47,7 @@ public class SplitterModifier : SpellModifier
 
             GameManager.Instance.projectileManager.CreateProjectile(
                 0,
-                "straight",
+                GetProjectileTrajectory(),
                 where,
                 dir,      // direction
                 speed,      // speed

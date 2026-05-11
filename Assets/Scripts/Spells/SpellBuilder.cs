@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class SpellBuilder
 {
@@ -38,7 +40,14 @@ public class SpellBuilder
             float manaMult = ModifierValueResolver.EvalFloat(doubler.mana_multiplier, vars, 2.0f);
             spell = new DoublerModifier(spell, delay, manaMult);
         }
-        
+        if (ModifierLoader.TryGet("homing", out var homing))
+        {
+            float dmgMult = ModifierValueResolver.EvalFloat(homing.damage_multiplier, vars, 0.75f);
+            int manaAdd = Mathf.RoundToInt(ModifierValueResolver.EvalFloat(homing.mana_adder, vars, 10f));
+
+            spell = new HomingModifier(spell, dmgMult, manaAdd);
+        }
+
         return spell;
     }
 }

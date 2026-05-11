@@ -14,6 +14,10 @@ public class BaseSpell : ISpell
     {
         return 15f;
     }
+    public virtual string GetProjectileTrajectory()
+    {
+        return "straight";
+    }
     public BaseSpell(SpellCaster owner)
     {
         Owner = owner;
@@ -59,7 +63,7 @@ public class BaseSpell : ISpell
 
         GameManager.Instance.projectileManager.CreateProjectile(
             0,
-            "straight",
+            GetProjectileTrajectory(),
             where,
             target - where,
             speed,

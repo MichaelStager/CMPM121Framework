@@ -33,7 +33,7 @@ public class DamageAmpModifier : SpellModifier
 
         GameManager.Instance.projectileManager.CreateProjectile(
             0,
-            "straight",
+            GetProjectileTrajectory(),
             where,
             target - where,
             speed,
