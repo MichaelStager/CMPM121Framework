@@ -5,6 +5,7 @@ public class DoublerModifier : SpellModifier
 {
     private readonly float secondCastDelay;
     private readonly float manaMultiplier;
+    private readonly float cooldownMultiplier;
 
     // secondCastDelay: time between first and second shot
     // manaMultiplier: total mana multiplier for casting twice (commonly 2.0f)
@@ -39,4 +40,5 @@ public class DoublerModifier : SpellModifier
 
         yield return inner.Cast(where, target, team);
     }
+    public override float GetCooldown() => inner.GetCooldown() * cooldownMultiplier;
 }
