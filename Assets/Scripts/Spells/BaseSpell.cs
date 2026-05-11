@@ -10,6 +10,14 @@ public class BaseSpell : ISpell
 
     public Hittable.Team Team { get; private set; }
 
+    public virtual float GetProjectileSpeed()
+    {
+        return 15f;
+    }
+    public virtual string GetProjectileTrajectory()
+    {
+        return "straight";
+    }
     public BaseSpell(SpellCaster owner)
     {
         Owner = owner;
@@ -51,13 +59,14 @@ public class BaseSpell : ISpell
         LastCast = Time.time;
 
         int resolvedDamage = GetDamage();
+        float speed = GetProjectileSpeed();
 
         GameManager.Instance.projectileManager.CreateProjectile(
             0,
-            "straight",
+            GetProjectileTrajectory(),
             where,
             target - where,
-            15f,
+            speed,
             (other, impact) => OnHitWithDamage(other, impact, resolvedDamage)
         );
 
