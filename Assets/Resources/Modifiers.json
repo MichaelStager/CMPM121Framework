@@ -31,8 +31,10 @@
    "bubble":{
         "name": "Bubble-wand",
        "description": "what ever floats your boat",
-       "damage_multiplier": "0.5",
-       "mana_multiplier": "0.5"
+       "damage_multiplier": "1",
+       "mana_multiplier": "1.25",
+       "projectile_trajectory": "withering",
+       "size_multiplier": "5.0"
    },
    "doubler": {
        "name": "doubled",
