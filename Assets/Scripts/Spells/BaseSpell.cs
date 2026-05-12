@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UIElements;
 
 //Spell interface
 public class BaseSpell : ISpell
@@ -17,6 +18,10 @@ public class BaseSpell : ISpell
     public virtual string GetProjectileTrajectory()
     {
         return "straight";
+    }
+    public virtual float GetProjectileScale()
+    {
+        return 1f;
     }
     public BaseSpell(SpellCaster owner)
     {
@@ -60,6 +65,7 @@ public class BaseSpell : ISpell
 
         int resolvedDamage = GetDamage();
         float speed = GetProjectileSpeed();
+        
 
         GameManager.Instance.projectileManager.CreateProjectile(
             0,
@@ -67,6 +73,7 @@ public class BaseSpell : ISpell
             where,
             target - where,
             speed,
+            GetProjectileScale(),
             (other, impact) => OnHitWithDamage(other, impact, resolvedDamage)
         );
 

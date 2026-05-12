@@ -51,6 +51,7 @@ public class SplitterModifier : SpellModifier
                 where,
                 dir,      // direction
                 speed,      // speed
+                GetProjectileScale(),
                 (other, impact) =>
                 {
                     if (other.team != team)

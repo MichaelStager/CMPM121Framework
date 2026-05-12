@@ -29,6 +29,7 @@ public abstract class SpellModifier : ISpell
     public virtual float GetCooldown() => inner.GetCooldown();
     public virtual float GetProjectileSpeed() => inner.GetProjectileSpeed();
     public virtual string GetProjectileTrajectory()=> inner.GetProjectileTrajectory();
+    public virtual float GetProjectileScale() => inner.GetProjectileScale();
 
     // Forward behavior
     public virtual bool IsReady() => inner.IsReady();

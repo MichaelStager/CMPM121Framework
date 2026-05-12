@@ -11,6 +11,7 @@ public class ModifierData
     public string mana_multiplier;
     public string cooldown_multiplier;
     public string speed_multiplier;
+    public string scale_multiplier;
 
     public string mana_adder;
     public string delay;
