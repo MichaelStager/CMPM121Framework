@@ -4,50 +4,62 @@
        "description": "Increased damage and increased mana cost.",
        "damage_multiplier": "1.5",
        "mana_multiplier": "1.25",
-       "weight" : 1
+       "size_multiplier": "1.25"
+       
    },
    "speed_amp": {
        "name": "speed-amplified",
        "description": "Faster projectile speed",
-       "speed_multiplier": "1.5",
-       "weight" : 2
+       "speed_multiplier": "1.5"
+       
+       
    },
    "broken":{
-        "name": "Broken wand",
-       "description": "Not as strong.",
-       "damage_multiplier": "1.5",
-       "mana_multiplier": "1.25",
-       "weight" : 1
+        "name": "Broken-wand",
+        "description": "Not as strong. But half as costly",
+        "damage_multiplier": "0.5",
+        "mana_multiplier": "0.5"
+   },
+   "massive":{
+        "name": "massive",
+        "description": "Yo mama so fat she cost all my mana.",
+        "damage_multiplier": "2.0",
+        "mana_multiplier": "2.0",
+        "size_multiplier": "500",
+        "speed_multiplier": "0.3"
+   },
+   "bubble":{
+        "name": "Bubble-wand",
+       "description": "what ever floats your boat",
+       "damage_multiplier": "0.5",
+       "mana_multiplier": "0.5"
    },
    "doubler": {
        "name": "doubled",
        "description": "Spell is cast a second time after a small delay; increased mana cost and cooldown.",
        "delay": "0.5",
        "mana_multiplier": "1.5",
-       "cooldown_multiplier": "1.5",
-       "weight" : 3
+       "cooldown_multiplier": "1.5"
+       
    },
    "splitter": {
        "name": "split",
        "description": "Spell is cast twice in slightly different directions; increased mana cost.",
        "angle": "10",
-       "mana_multiplier": "1.5",
-       "weight" : 4
+       "mana_multiplier": "1.5"
    },
    "chaos": {
        "name": "chaotic",
        "description": "Significantly increased damage, but projectile is spiraling.",
        "damage_multiplier": "1.5 wave 5 / +",
-       "projectile_trajectory": "spiraling",
-       "weight" : 5
+       "projectile_trajectory": "spiraling"
    },
    "homing": {
        "name": "homing",
        "description": "Homing projectile, with decreased damage and increased mana cost.",
        "damage_multiplier": "0.75",
        "mana_adder": "10",
-       "projectile_trajectory": "homing",
-       "weight" : 6
+       "projectile_trajectory": "homing"
    }
 
 }

@@ -15,12 +15,13 @@ public class SpellBuilder
 
         List<string> possibleModifiers = new List<string>
         {
-            "homing",
-            "chaos",
-            "damage_amp",
-            "speed_amp",
+           // "homing",
+          //  "chaos",
+           // "damage_amp",
+           // "speed_amp",
             "splitter",
-            "doubler"
+           // "doubler",
+            "massive"
         };
 
         for (int i = 0; i < modifierCount; i++)
@@ -59,7 +60,16 @@ public class SpellBuilder
         {
             float dmgMult = ModifierValueResolver.EvalFloat(damageAmp.damage_multiplier, vars, 1.5f);
             float manaMult = ModifierValueResolver.EvalFloat(damageAmp.mana_multiplier, vars, 1.5f);
-            return new DamageAmpModifier(spell, dmgMult, manaMult);
+            float scaleMult = ModifierValueResolver.EvalFloat(damageAmp.scale_multiplier, vars, 1.5f);
+            return new DamageAmpModifier(spell, dmgMult, manaMult,scaleMult);
+        }
+        if (modifierId == "massive" && ModifierLoader.TryGet("massive", out var massive))
+        {
+            float damgMult = ModifierValueResolver.EvalFloat(massive.delay, vars, 0.15f);
+            float manaMult = ModifierValueResolver.EvalFloat(massive.mana_multiplier, vars, 2.0f);
+            float scaleMult = ModifierValueResolver.EvalFloat(massive.scale_multiplier, vars, 2.0f);
+            float speedMult = ModifierValueResolver.EvalFloat(massive.speed_multiplier, vars, .3f);
+            return new MassiveModifier(spell, damgMult, manaMult,scaleMult,speedMult);
         }
 
         if (modifierId == "speed_amp" && ModifierLoader.TryGet("speed_amp", out var speedAmp))

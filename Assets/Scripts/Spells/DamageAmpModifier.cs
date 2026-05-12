@@ -5,12 +5,14 @@ public class DamageAmpModifier : SpellModifier
 {
     private readonly float damageMultiplier;
     private readonly float manaMultiplier;
+    private readonly float sizeMultiplier;
 
-    public DamageAmpModifier(ISpell inner, float damageMultiplier = 1.5f, float manaMultiplier = 1.5f)
+    public DamageAmpModifier(ISpell inner, float damageMultiplier = 1.5f, float manaMultiplier = 1.5f, float scaleMultipler = 1.5f)
         : base(inner)
     {
         this.damageMultiplier = damageMultiplier;
         this.manaMultiplier = manaMultiplier;
+        this.sizeMultiplier = scaleMultipler;
     }
 
     public override int GetDamage()
@@ -21,6 +23,10 @@ public class DamageAmpModifier : SpellModifier
     public override int GetManaCost()
     {
         return Mathf.RoundToInt(inner.GetManaCost() * manaMultiplier);
+    }
+    public override float GetProjectileScale()
+    {
+        return inner.GetProjectileScale() * sizeMultiplier;
     }
 
     public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
@@ -37,6 +43,7 @@ public class DamageAmpModifier : SpellModifier
             where,
             target - where,
             speed,
+            GetProjectileScale(),
             (other, impact) =>
             {
                 if (other.team != team)
