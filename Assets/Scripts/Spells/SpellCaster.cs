@@ -84,6 +84,15 @@ public class SpellCaster
         }
     }
 
+    public bool IsInventoryFull()
+    {
+        return spells.Count >= maxSpells;
+    }
+
+    public bool HasInventorySpace()
+    {
+        return spells.Count < maxSpells;
+    }
 
 
 }
