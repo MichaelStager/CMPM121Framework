@@ -19,10 +19,11 @@ public class SpellBuilder
           //  "chaos",
             "damage_amp",
            // "speed_amp",
-            "splitter",
+            //"splitter",
             //"doubler",
             //"massive",
-           // "broken"
+           // "broken",
+           "bubble"
         };
 
         for (int i = 0; i < modifierCount; i++)
@@ -49,6 +50,14 @@ public class SpellBuilder
             float dmgMult = ModifierValueResolver.EvalFloat(homing.damage_multiplier, vars, 0.75f);
             int manaAdd = Mathf.RoundToInt(ModifierValueResolver.EvalFloat(homing.mana_adder, vars, 10f));
             return new HomingModifier(spell, dmgMult, manaAdd);
+        }
+        if (modifierId == "bubble" && ModifierLoader.TryGet("bubble", out var bubble))
+        {
+            float dmgMult = ModifierValueResolver.EvalFloat(bubble.damage_multiplier, vars, 1f);
+            float manaMult = ModifierValueResolver.EvalFloat(bubble.mana_multiplier, vars, 1.25f);
+            string traj = string.IsNullOrWhiteSpace(bubble.projectile_trajectory) ? "withering" : bubble.projectile_trajectory;
+            float sizeMult = ModifierValueResolver.EvalFloat(bubble.scale_multiplier, vars, 3.0f);
+            return new BubbleModifier(spell, dmgMult, manaMult, sizeMult, traj);
         }
 
         if (modifierId == "chaos" && ModifierLoader.TryGet("chaos", out var chaos))

@@ -14,12 +14,18 @@ public class ProjectileManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-
-
-    public void CreateProjectile(int which, string trajectory, Vector3 where, Vector3 direction, float speed, float size, Action<Hittable, Vector3> onHit)
+    public void CreateProjectile(
+        int which,
+        string trajectory,
+        Vector3 where,
+        Vector3 direction,
+        float speed,
+        float size,
+        Hittable.Team sourceTeam,
+        Action<Hittable, Vector3> onHit)
     {
         GameObject new_projectile = Instantiate(
             projectiles[which],
@@ -27,10 +33,12 @@ public class ProjectileManager : MonoBehaviour
             Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg)
         );
 
-        new_projectile.transform.localScale *= size; // <-- apply scale
+        new_projectile.transform.localScale *= size;
 
-        new_projectile.GetComponent<ProjectileController>().movement = MakeMovement(trajectory, speed);
-        new_projectile.GetComponent<ProjectileController>().OnHit += onHit;
+        ProjectileController pc = new_projectile.GetComponent<ProjectileController>();
+        pc.sourceTeam = sourceTeam;
+        pc.movement = MakeMovement(trajectory, speed);
+        pc.OnHit += onHit;
     }
 
     public ProjectileMovement MakeMovement(string name, float speed)
@@ -47,7 +55,10 @@ public class ProjectileManager : MonoBehaviour
         {
             return new SpiralingProjectileMovement(speed);
         }
+        if (name == "withering")
+        {
+            return new WitheringProjectileMovement(speed);
+        }
         return null;
     }
-
 }
