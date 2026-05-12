@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public interface ISpell
 {
@@ -14,6 +15,7 @@ public interface ISpell
     string GetProjectileTrajectory();
     float GetProjectileScale();
 
+
     // Runtime state
     float LastCast { get; set; }
     SpellCaster Owner { get; }
@@ -21,5 +23,8 @@ public interface ISpell
     // Behavior
     bool IsReady();
     IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team);
-   
+    IEnumerable<Vector3> GetShotDirections(Vector3 baseDirection);
+    int GetExtraCastCount();
+    float GetExtraCastDelay();
+
 }

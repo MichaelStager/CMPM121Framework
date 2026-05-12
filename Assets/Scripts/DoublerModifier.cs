@@ -1,14 +1,10 @@
 using UnityEngine;
-using System.Collections;
 
 public class DoublerModifier : SpellModifier
 {
     private readonly float secondCastDelay;
     private readonly float manaMultiplier;
-    private readonly float cooldownMultiplier;
 
-    // secondCastDelay: time between first and second shot
-    // manaMultiplier: total mana multiplier for casting twice (commonly 2.0f)
     public DoublerModifier(ISpell inner, float secondCastDelay = 0.15f, float manaMultiplier = 2.0f)
         : base(inner)
     {
@@ -26,19 +22,14 @@ public class DoublerModifier : SpellModifier
         return "Doubled " + inner.GetName();
     }
 
-    public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
+    public override int GetExtraCastCount()
     {
-        // one cooldown event for the whole doubled cast
-        LastCast = Time.time;
-
-        // first cast now
-        yield return inner.Cast(where, target, team);
-
-        // delay then second cast
-        if (secondCastDelay > 0f)
-            yield return new WaitForSeconds(secondCastDelay);
-
-        yield return inner.Cast(where, target, team);
+        return inner.GetExtraCastCount() + 1;
     }
-    public override float GetCooldown() => inner.GetCooldown() * cooldownMultiplier;
+
+    public override float GetExtraCastDelay()
+    {
+        // choose max so multiple timing modifiers remain stable
+        return Mathf.Max(inner.GetExtraCastDelay(), secondCastDelay);
+    }
 }

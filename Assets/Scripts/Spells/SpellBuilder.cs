@@ -20,8 +20,9 @@ public class SpellBuilder
             "damage_amp",
            // "speed_amp",
             "splitter",
-           // "doubler",
-            //"massive"
+            //"doubler",
+            //"massive",
+           // "broken"
         };
 
         for (int i = 0; i < modifierCount; i++)
@@ -65,7 +66,7 @@ public class SpellBuilder
         }
         if (modifierId == "massive" && ModifierLoader.TryGet("massive", out var massive))
         {
-            float damgMult = ModifierValueResolver.EvalFloat(massive.delay, vars, 0.15f);
+            float damgMult = ModifierValueResolver.EvalFloat(massive.damage_multiplier, vars, 0.15f);
             float manaMult = ModifierValueResolver.EvalFloat(massive.mana_multiplier, vars, 2.0f);
             float scaleMult = ModifierValueResolver.EvalFloat(massive.scale_multiplier, vars, 2.0f);
             float speedMult = ModifierValueResolver.EvalFloat(massive.speed_multiplier, vars, .3f);
@@ -77,8 +78,15 @@ public class SpellBuilder
             float speedMult = ModifierValueResolver.EvalFloat(speedAmp.speed_multiplier, vars, 1.5f);
             return new SpeedModifier(spell, speedMult, 1f);
         }
+        if(modifierId == "broken" && ModifierLoader.TryGet("broken", out var broken))
+        {
+            Debug.Log("Applying broken modifier with vars: " + string.Join(", ", vars));
+            float dmgMult = ModifierValueResolver.EvalFloat(broken.damage_multiplier, vars, 0.5f);
+            float manaMult = ModifierValueResolver.EvalFloat(broken.mana_multiplier, vars, 0.5f);
+            return new BrokenModifier(spell, dmgMult, manaMult);
+        }
 
-        if (modifierId == "splitter" && ModifierLoader.TryGet("splitter", out var splitter))
+            if (modifierId == "splitter" && ModifierLoader.TryGet("splitter", out var splitter))
         {
             float angle = ModifierValueResolver.EvalFloat(splitter.angle, vars, 15f);
             float manaMult = ModifierValueResolver.EvalFloat(splitter.mana_multiplier, vars, 1.5f);

@@ -1,18 +1,16 @@
 using UnityEngine;
 using System.Collections;
 
-public class DamageAmpModifier : SpellModifier
+public class BrokenModifier : SpellModifier
 {
     private readonly float damageMultiplier;
     private readonly float manaMultiplier;
-    private readonly float sizeMultiplier;
 
-    public DamageAmpModifier(ISpell inner, float damageMultiplier = 1.5f, float manaMultiplier = 1.5f, float scaleMultipler = 1.5f)
+    public BrokenModifier(ISpell inner, float damageMultiplier = 0.5f, float manaMultiplier = 0.5f)
         : base(inner)
     {
         this.damageMultiplier = damageMultiplier;
         this.manaMultiplier = manaMultiplier;
-        this.sizeMultiplier = scaleMultipler;
     }
 
     public override int GetDamage()
@@ -24,13 +22,9 @@ public class DamageAmpModifier : SpellModifier
     {
         return Mathf.RoundToInt(inner.GetManaCost() * manaMultiplier);
     }
-    public override float GetProjectileScale()
-    {
-        return inner.GetProjectileScale() * sizeMultiplier;
-    }
+
     public override string GetName()
     {
-        return "Empowered " + inner.GetName();
+        return "Broken " + inner.GetName();
     }
-
 }
