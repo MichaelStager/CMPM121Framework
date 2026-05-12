@@ -62,6 +62,9 @@ public  class WaveManager : MonoBehaviour
 
     IEnumerator SpawnWave(Level level)
     {
+        PlayerController player = GameManager.Instance.player.GetComponent<PlayerController>();
+        player.ApplyStatsForWave(wave);
+
         GameManager.Instance.state = GameManager.GameState.COUNTDOWN;
         GameManager.Instance.countdown = 3;
 
