@@ -27,32 +27,4 @@ public class BrokenModifier : SpellModifier
     {
         return "Broken " + inner.GetName();
     }
-
-    public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
-    {
-        LastCast = Time.time;
-
-        int resolvedDamage = GetDamage();
-        float resolvedSpeed = GetProjectileSpeed();
-        float resolvedSize = GetProjectileScale();
-        string resolvedTrajectory = GetProjectileTrajectory();
-
-        GameManager.Instance.projectileManager.CreateProjectile(
-            0,
-            resolvedTrajectory,
-            where,
-            target - where,
-            resolvedSpeed,
-            resolvedSize,
-            (other, impact) =>
-            {
-                if (other.team != team)
-                {
-                    other.Damage(new Damage(resolvedDamage, Damage.Type.ARCANE));
-                }
-            }
-        );
-
-        yield return new WaitForEndOfFrame();
-    }
 }

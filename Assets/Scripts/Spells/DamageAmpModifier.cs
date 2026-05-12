@@ -28,31 +28,9 @@ public class DamageAmpModifier : SpellModifier
     {
         return inner.GetProjectileScale() * sizeMultiplier;
     }
-
-    public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
+    public override string GetName()
     {
-        // keep cooldown behavior consistent
-        LastCast = Time.time;
-
-        int resolvedDamage = GetDamage();
-        float speed = GetProjectileSpeed();
-
-        GameManager.Instance.projectileManager.CreateProjectile(
-            0,
-            GetProjectileTrajectory(),
-            where,
-            target - where,
-            speed,
-            GetProjectileScale(),
-            (other, impact) =>
-            {
-                if (other.team != team)
-                {
-                    other.Damage(new Damage(resolvedDamage, Damage.Type.ARCANE));
-                }
-            }
-        );
-
-        yield return new WaitForEndOfFrame();
+        return "Empowered " + inner.GetName();
     }
+
 }

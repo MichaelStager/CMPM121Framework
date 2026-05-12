@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class SpellModifier : ISpell
 {
@@ -30,6 +31,11 @@ public abstract class SpellModifier : ISpell
     public virtual float GetProjectileSpeed() => inner.GetProjectileSpeed();
     public virtual string GetProjectileTrajectory()=> inner.GetProjectileTrajectory();
     public virtual float GetProjectileScale() => inner.GetProjectileScale();
+    public virtual IEnumerable<Vector3> GetShotDirections(Vector3 baseDirection)
+    => inner.GetShotDirections(baseDirection);
+
+    public virtual int GetExtraCastCount() => inner.GetExtraCastCount();
+    public virtual float GetExtraCastDelay() => inner.GetExtraCastDelay();
 
     // Forward behavior
     public virtual bool IsReady() => inner.IsReady();

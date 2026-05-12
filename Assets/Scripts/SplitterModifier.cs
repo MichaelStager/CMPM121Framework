@@ -1,18 +1,14 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class SplitterModifier : SpellModifier
 {
-    private readonly int extraProjectilesPerSide; // e.g. 1 => total 3 shots (left, center, right)
-    private readonly float angleStepDegrees;      // e.g. 15f => -15, 0, +15
+    private readonly int extraProjectilesPerSide;
+    private readonly float angleStepDegrees;
     private readonly float manaMultiplier;
 
-    public SplitterModifier(
-        ISpell inner,
-        int extraProjectilesPerSide = 1,
-        float angleStepDegrees = 15f,
-        float manaMultiplier = 1.5f
-    ) : base(inner)
+    public SplitterModifier(ISpell inner, int extraProjectilesPerSide = 1, float angleStepDegrees = 15f, float manaMultiplier = 1.5f)
+        : base(inner)
     {
         this.extraProjectilesPerSide = Mathf.Max(0, extraProjectilesPerSide);
         this.angleStepDegrees = angleStepDegrees;
@@ -29,40 +25,17 @@ public class SplitterModifier : SpellModifier
         return "Split " + inner.GetName();
     }
 
-    public override IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
+    public override IEnumerable<Vector3> GetShotDirections(Vector3 baseDirection)
     {
-        LastCast = Time.time;
+        if (baseDirection.sqrMagnitude < 0.0001f)
+            baseDirection = Vector3.right;
 
-        Vector3 baseDir = (target - where);
-        if (baseDir.sqrMagnitude < 0.0001f)
-            baseDir = Vector3.right; // fallback
+        baseDirection = baseDirection.normalized;
 
-        int resolvedDamage = GetDamage();
-        float speed = GetProjectileSpeed();
-
-        // fire from -N ... 0 ... +N
         for (int i = -extraProjectilesPerSide; i <= extraProjectilesPerSide; i++)
         {
-            Vector3 dir = Rotate2D(baseDir.normalized, i * angleStepDegrees);
-
-            GameManager.Instance.projectileManager.CreateProjectile(
-                0,
-                GetProjectileTrajectory(),
-                where,
-                dir,      // direction
-                speed,      // speed
-                GetProjectileScale(),
-                (other, impact) =>
-                {
-                    if (other.team != team)
-                    {
-                        other.Damage(new Damage(resolvedDamage, Damage.Type.ARCANE));
-                    }
-                }
-            );
+            yield return Rotate2D(baseDirection, i * angleStepDegrees);
         }
-
-        yield return new WaitForEndOfFrame();
     }
 
     private Vector3 Rotate2D(Vector3 v, float degrees)

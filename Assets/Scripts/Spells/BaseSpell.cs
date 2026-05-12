@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 //Spell interface
@@ -57,34 +58,56 @@ public class BaseSpell : ISpell
     {
         return LastCast + GetCooldown() < Time.time;
     }
+    public virtual IEnumerable<Vector3> GetShotDirections(Vector3 baseDirection)
+    {
+        if (baseDirection.sqrMagnitude < 0.0001f)
+            baseDirection = Vector3.right;
+
+        yield return baseDirection.normalized;
+    }
+
+    public virtual int GetExtraCastCount() => 0;
+    public virtual float GetExtraCastDelay() => 0f;
 
     public virtual IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
     {
         Team = team;
         LastCast = Time.time;
 
-        int resolvedDamage = GetDamage();
-        float speed = GetProjectileSpeed();
-        
+        Vector3 baseDir = target - where;
+        if (baseDir.sqrMagnitude < 0.0001f) baseDir = Vector3.right;
 
-        GameManager.Instance.projectileManager.CreateProjectile(
-            0,
-            GetProjectileTrajectory(),
-            where,
-            target - where,
-            speed,
-            GetProjectileScale(),
-            (other, impact) => OnHitWithDamage(other, impact, resolvedDamage)
-        );
+        int totalCasts = 1 + Mathf.Max(0, GetExtraCastCount());
+        float extraDelay = Mathf.Max(0f, GetExtraCastDelay());
+
+        for (int c = 0; c < totalCasts; c++)
+        {
+            int resolvedDamage = GetDamage();
+            float speed = GetProjectileSpeed();
+            float size = GetProjectileScale();
+            string trajectory = GetProjectileTrajectory();
+
+            foreach (var dir in GetShotDirections(baseDir))
+            {
+                GameManager.Instance.projectileManager.CreateProjectile(
+                    0,
+                    trajectory,
+                    where,
+                    dir,
+                    speed,
+                    size,
+                    (other, impact) =>
+                    {
+                        if (other.team != team)
+                            other.Damage(new Damage(resolvedDamage, Damage.Type.ARCANE));
+                    }
+                );
+            }
+
+            if (c < totalCasts - 1 && extraDelay > 0f)
+                yield return new WaitForSeconds(extraDelay);
+        }
 
         yield return new WaitForEndOfFrame();
-    }
-
-    protected virtual void OnHitWithDamage(Hittable other, Vector3 impact, int damage)
-    {
-        if (other.team != Team)
-        {
-            other.Damage(new Damage(damage, Damage.Type.ARCANE));
-        }
     }
 }
