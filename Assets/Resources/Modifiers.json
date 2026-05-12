@@ -17,7 +17,7 @@
    "broken":{
         "name": "Broken-wand",
         "description": "Not as strong. But half as costly",
-        "damage_multiplier": "0.5",
+        "damage_multiplier": "0.1",
         "mana_multiplier": "0.5"
    },
    "massive":{

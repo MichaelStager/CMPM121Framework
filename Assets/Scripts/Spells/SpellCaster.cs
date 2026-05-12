@@ -47,6 +47,7 @@ public class SpellCaster
 
             if (spell.IsReady() && mana >= spell.GetManaCost())
             {
+                Debug.Log($"Spell={spell.GetName()} Damage={spell.GetDamage()} ManaCost={spell.GetManaCost()}");
                 mana -= spell.GetManaCost();
                 yield return spell.Cast(where, target, team);
 
