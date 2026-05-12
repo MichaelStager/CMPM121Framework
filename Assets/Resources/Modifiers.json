@@ -12,6 +12,13 @@
        "speed_multiplier": "1.5",
        "weight" : 2
    },
+   "broken":{
+        "name": "Broken wand",
+       "description": "Not as strong.",
+       "damage_multiplier": "1.5",
+       "mana_multiplier": "1.25",
+       "weight" : 1
+   },
    "doubler": {
        "name": "doubled",
        "description": "Spell is cast a second time after a small delay; increased mana cost and cooldown.",
