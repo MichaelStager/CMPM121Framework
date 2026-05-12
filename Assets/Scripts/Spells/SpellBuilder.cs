@@ -17,11 +17,11 @@ public class SpellBuilder
         {
            // "homing",
           //  "chaos",
-           // "damage_amp",
+            "damage_amp",
            // "speed_amp",
             "splitter",
            // "doubler",
-            "massive"
+            //"massive"
         };
 
         for (int i = 0; i < modifierCount; i++)
