@@ -91,19 +91,20 @@ public class BaseSpell : ISpell
             foreach (var dir in GetShotDirections(baseDir))
             {
                 GameManager.Instance.projectileManager.CreateProjectile(
-                    0,
-                    trajectory,
-                    where,
-                    dir,
-                    speed,
-                    size,
-                    (other, impact) =>
-                    {
-                        if (other.team != team)
-                        {
-                            other.Damage(new Damage(resolvedDamage, Damage.Type.ARCANE));
-                        }
-                    }
+                  0,
+                  trajectory,
+                  where,
+                  dir,
+                  speed,
+                  size,
+                  team,
+                  (other, impact) =>
+                  {
+                     if (other.team != team)
+                     {
+                          other.Damage(new Damage(resolvedDamage, Damage.Type.ARCANE));
+                     }
+                  }
                 );
             }
 

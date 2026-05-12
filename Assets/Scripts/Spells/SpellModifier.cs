@@ -63,19 +63,20 @@ public abstract class SpellModifier : ISpell
             foreach (var dir in GetShotDirections(baseDir))
             {
                 GameManager.Instance.projectileManager.CreateProjectile(
-                    0,
-                    trajectory,
-                    where,
-                    dir,
-                    speed,
-                    size,
-                    (other, impact) =>
+                 0,
+                trajectory,
+                where,
+                dir,
+                speed,
+                size,
+                team, // NEW parameter (sourceTeam)
+                (other, impact) =>
+                {
+                    if (other.team != team)
                     {
-                        if (other.team != team)
-                        {
-                            other.Damage(new Damage(resolvedDamage, Damage.Type.ARCANE));
-                        }
+                        other.Damage(new Damage(resolvedDamage, Damage.Type.ARCANE));
                     }
+                }
                 );
             }
 
