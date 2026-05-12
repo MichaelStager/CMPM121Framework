@@ -71,11 +71,12 @@ public class BaseSpell : ISpell
 
     public virtual IEnumerator Cast(Vector3 where, Vector3 target, Hittable.Team team)
     {
-        Team = team;
+        // One cooldown event for the whole (possibly multi-cast) action
         LastCast = Time.time;
 
         Vector3 baseDir = target - where;
-        if (baseDir.sqrMagnitude < 0.0001f) baseDir = Vector3.right;
+        if (baseDir.sqrMagnitude < 0.0001f)
+            baseDir = Vector3.right;
 
         int totalCasts = 1 + Mathf.Max(0, GetExtraCastCount());
         float extraDelay = Mathf.Max(0f, GetExtraCastDelay());
@@ -99,7 +100,9 @@ public class BaseSpell : ISpell
                     (other, impact) =>
                     {
                         if (other.team != team)
+                        {
                             other.Damage(new Damage(resolvedDamage, Damage.Type.ARCANE));
+                        }
                     }
                 );
             }
