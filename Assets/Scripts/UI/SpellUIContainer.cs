@@ -5,6 +5,7 @@ public class SpellUIContainer : MonoBehaviour
 {
     public GameObject[] spellUIs;
     public PlayerController player;
+    public WaveSummaryUI waveSummaryUI;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,6 +29,7 @@ public class SpellUIContainer : MonoBehaviour
 
                 SpellUI spellUI = spellUIs[i].GetComponent<SpellUI>();
                 spellUI.SetSpell(spells[i]);
+                spellUI.SetDropContext(this, i);
 
                 if (spellUI.highlight != null)
                 {
@@ -54,5 +56,21 @@ public class SpellUIContainer : MonoBehaviour
         }
 
         SetSpells(player.spellcaster.spells, player.spellcaster.currentSpellIndex);
+    }
+
+    public void DropSpell(int index)
+    {
+        if (player == null || player.spellcaster == null)
+        {
+            return;
+        }
+
+        player.spellcaster.DropSpell(index);
+        Refresh();
+
+        if (waveSummaryUI != null)
+        {
+            waveSummaryUI.RefreshRewardState();
+        }
     }
 }

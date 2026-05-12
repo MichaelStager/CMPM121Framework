@@ -13,11 +13,34 @@ public class SpellUI : MonoBehaviour
     float last_text_update;
     const float UPDATE_DELAY = 1;
     public GameObject dropbutton;
+    public Button dropButtonComponent;
+    private int spellIndex;
+    private SpellUIContainer container;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         last_text_update = 0;
+
+        if (dropbutton != null)
+        {
+            dropButtonComponent = dropbutton.GetComponent<Button>();
+            dropButtonComponent.onClick.AddListener(OnDropClicked);
+        }
+    }
+
+    public void SetDropContext(SpellUIContainer container, int spellIndex)
+    {
+        this.container = container;
+        this.spellIndex = spellIndex;
+    }
+
+    private void OnDropClicked()
+    {
+        if (container != null)
+        {
+            container.DropSpell(spellIndex);
+        }
     }
 
     public void SetSpell(ISpell spell)
