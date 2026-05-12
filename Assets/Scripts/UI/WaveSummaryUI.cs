@@ -10,13 +10,21 @@ public class WaveSummaryUI : MonoBehaviour
     public Button continueButton;
 
     private WaveManager spawner;
+    private bool rewardGiven;
 
     public PlayerController player;
 
     void Start()
     {
-        panel.SetActive(false);
-        continueButton.onClick.AddListener(OnContinueClicked);
+        if (panel != null)
+        {
+            panel.SetActive(false);
+        }
+
+        if (continueButton != null)
+        {
+            continueButton.onClick.AddListener(OnContinueClicked);
+        }
     }
 
     public void SetSpawner(WaveManager enemySpawner)
@@ -26,6 +34,7 @@ public class WaveSummaryUI : MonoBehaviour
 
     public void Show(WaveStats stats)
     {
+        rewardGiven = false;
         panel.SetActive(true);
 
         titleText.text = "Wave " + stats.waveNumber + " Complete!";
@@ -56,13 +65,24 @@ public class WaveSummaryUI : MonoBehaviour
 
     private void GiveSpellReward()
     {
+        if (rewardGiven)
+        {
+            return;
+        }
+
+        if (player == null && GameManager.Instance.player != null)
+        {
+            player = GameManager.Instance.player.GetComponent<PlayerController>();
+        }
+
         if (player == null || player.spellcaster == null)
         {
             return;
         }
 
-        ISpell rewardSpell = new SpellBuilder().Build(player.spellcaster);
+        ISpell rewardSpell = new SpellBuilder().BuildRandom(player.spellcaster, 2);
         bool added = player.spellcaster.AddSpell(rewardSpell);
+        rewardGiven = added;
 
         if (added && player.spellui != null)
         {

@@ -30,12 +30,14 @@ public class PlayerController : MonoBehaviour
 
     public void StartLevel()
     {
-        spellcaster = new SpellCaster(125, 8, Hittable.Team.PLAYER);
+        spellcaster = new SpellCaster(100, 10, Hittable.Team.PLAYER);
         StartCoroutine(spellcaster.ManaRegeneration());
-        
+
         hp = new Hittable(100, Hittable.Team.PLAYER, gameObject);
         hp.OnDeath += Die;
         hp.team = Hittable.Team.PLAYER;
+
+        ApplyStatsForWave(1);
 
         // tell UI elements what to show
         healthui.SetHealth(hp);
@@ -48,7 +50,23 @@ public class PlayerController : MonoBehaviour
     {
         
     }
+    public void ApplyStatsForWave(int wave)
+    {
+        int newMaxHp = 95 + wave * 5;
+        int newMaxMana = 90 + wave * 10;
+        int newManaRegen = 10 + wave;
+        int newSpellPower = wave * 10;
+        int newSpeed = 5;
 
+        hp.SetMaxHP(newMaxHp);
+
+        spellcaster.max_mana = newMaxMana;
+        spellcaster.mana = Mathf.Min(spellcaster.mana, spellcaster.max_mana);
+        spellcaster.mana_reg = newManaRegen;
+        spellcaster.spellPower = newSpellPower;
+
+        speed = newSpeed;
+    }
     void OnAttack(InputValue value)
     {
         if (GameManager.Instance.state == GameManager.GameState.PREGAME || GameManager.Instance.state == GameManager.GameState.GAMEOVER) return;

@@ -11,13 +11,14 @@ public class SpellCaster
     public List<ISpell> spells = new List<ISpell>();
     public int currentSpellIndex = 0;
     public int maxSpells = 4;
+    public int spellPower;
 
 
     public IEnumerator ManaRegeneration()
     {
         while (true)
         {
-            mana += mana_reg;
+            mana += mana_reg * 100;
             mana = Mathf.Min(mana, max_mana);
             yield return new WaitForSeconds(1);
         }
@@ -26,10 +27,10 @@ public class SpellCaster
     public SpellCaster(int mana, int mana_reg, Hittable.Team team)
     {
         this.mana = mana;
-        this.max_mana = mana;
+        this.max_mana = mana; //1000 is for debug   
         this.mana_reg = mana_reg;
         this.team = team;
-        AddSpell(new SpellBuilder().Build(this));
+        AddSpell(new BaseSpell(this));
     }
 
     public IEnumerator Cast(Vector3 where, Vector3 target)
@@ -82,5 +83,7 @@ public class SpellCaster
             currentSpellIndex = 0;
         }
     }
+
+
 
 }
