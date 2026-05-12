@@ -14,34 +14,39 @@ public class SpellBuilder
             { "wave", 1 }, // adjust member if needed, hard coded number for now but we will need to get the wave number later.
             { "power", 0f } // replace with actual player power stat when available
         };
-        if (ModifierLoader.TryGet("homing", out var homing))
+        if (ModifierLoader.TryGet("homing", out var homing))  //trajectory mod.
         {
             float dmgMult = ModifierValueResolver.EvalFloat(homing.damage_multiplier, vars, 0.75f);
             int manaAdd = Mathf.RoundToInt(ModifierValueResolver.EvalFloat(homing.mana_adder, vars, 10f));
 
             spell = new HomingModifier(spell, dmgMult, manaAdd);
         }
+        if (ModifierLoader.TryGet("chaos", out var chaos)) // trajectory mod.
+        {
+            float dmgMult = ModifierValueResolver.EvalFloat(chaos.damage_multiplier, vars, 1.5f);
+            spell = new ChaosModifier(spell, dmgMult);
+        }
 
-        if (ModifierLoader.TryGet("damage_amp", out var damageAmp))
+        if (ModifierLoader.TryGet("damage_amp", out var damageAmp)) //stat amp mod.
         {
             float dmgMult = ModifierValueResolver.EvalFloat(damageAmp.damage_multiplier, vars, 1.5f);
             float manaMult = ModifierValueResolver.EvalFloat(damageAmp.mana_multiplier, vars, 1.5f);
             spell = new DamageAmpModifier(spell, dmgMult, manaMult);
         }
-        if (ModifierLoader.TryGet("speed_amp", out var speedAmp))
+        if (ModifierLoader.TryGet("speed_amp", out var speedAmp)) //stat amp mod.
         {
             float speedMult = ModifierValueResolver.EvalFloat(speedAmp.speed_multiplier, vars, 1.5f);
             spell = new SpeedModifier(spell, speedMult, 1f);
         }
 
-        if (ModifierLoader.TryGet("splitter", out var splitter))
+        if (ModifierLoader.TryGet("splitter", out var splitter)) // behavior mod.
         {
             float angle = ModifierValueResolver.EvalFloat(splitter.angle, vars, 15f);
             float manaMult = ModifierValueResolver.EvalFloat(splitter.mana_multiplier, vars, 1.5f);
             spell = new SplitterModifier(spell, 1, angle, manaMult);
         }
 
-        if (ModifierLoader.TryGet("doubler", out var doubler))
+        if (ModifierLoader.TryGet("doubler", out var doubler)) // behavior mod.
         {
             float delay = ModifierValueResolver.EvalFloat(doubler.delay, vars, 0.15f);
             float manaMult = ModifierValueResolver.EvalFloat(doubler.mana_multiplier, vars, 2.0f);
