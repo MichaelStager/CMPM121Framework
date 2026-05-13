@@ -3,12 +3,38 @@
        "name": "damage-amplified",
        "description": "Increased damage and increased mana cost.",
        "damage_multiplier": "1.5",
-       "mana_multiplier": "1.5"
+       "mana_multiplier": "1.25",
+       "size_multiplier": "1.25"
+       
    },
    "speed_amp": {
        "name": "speed-amplified",
        "description": "Faster projectile speed",
-       "speed_multiplier": "1.75"
+       "speed_multiplier": "1.5"
+       
+       
+   },
+   "broken":{
+        "name": "Broken-wand",
+        "description": "Not as strong. But half as costly",
+        "damage_multiplier": "0.1",
+        "mana_multiplier": "0.5"
+   },
+   "massive":{
+        "name": "massive",
+        "description": "Yo mama so fat she cost all my mana.",
+        "damage_multiplier": "2.0",
+        "mana_multiplier": "2.0",
+        "size_multiplier": "500",
+        "speed_multiplier": "0.3"
+   },
+   "bubble":{
+        "name": "Bubble-wand",
+       "description": "what ever floats your boat",
+       "damage_multiplier": "1",
+       "mana_multiplier": "1.25",
+       "projectile_trajectory": "withering",
+       "size_multiplier": "5.0"
    },
    "doubler": {
        "name": "doubled",
@@ -16,6 +42,7 @@
        "delay": "0.5",
        "mana_multiplier": "1.5",
        "cooldown_multiplier": "1.5"
+       
    },
    "splitter": {
        "name": "split",

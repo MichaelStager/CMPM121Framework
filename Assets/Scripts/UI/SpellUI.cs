@@ -9,18 +9,41 @@ public class SpellUI : MonoBehaviour
     public TextMeshProUGUI manacost;
     public TextMeshProUGUI damage;
     public GameObject highlight;
-    public Spell spell;
+    public ISpell spell;
     float last_text_update;
     const float UPDATE_DELAY = 1;
     public GameObject dropbutton;
+    public Button dropButtonComponent;
+    private int spellIndex;
+    private SpellUIContainer container;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         last_text_update = 0;
+
+        if (dropbutton != null)
+        {
+            dropButtonComponent = dropbutton.GetComponent<Button>();
+            dropButtonComponent.onClick.AddListener(OnDropClicked);
+        }
     }
 
-    public void SetSpell(Spell spell)
+    public void SetDropContext(SpellUIContainer container, int spellIndex)
+    {
+        this.container = container;
+        this.spellIndex = spellIndex;
+    }
+
+    private void OnDropClicked()
+    {
+        if (container != null)
+        {
+            container.DropSpell(spellIndex);
+        }
+    }
+
+    public void SetSpell(ISpell spell)
     {
         this.spell = spell;
         GameManager.Instance.spellIconManager.PlaceSprite(spell.GetIcon(), icon.GetComponent<Image>());
@@ -37,7 +60,7 @@ public class SpellUI : MonoBehaviour
             last_text_update = Time.time;
         }
         
-        float since_last = Time.time - spell.last_cast;
+        float since_last = Time.time - spell.LastCast;
         float perc;
         if (since_last > spell.GetCooldown())
         {

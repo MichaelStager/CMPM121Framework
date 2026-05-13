@@ -38,6 +38,6 @@
        "damage": {"amount": "3 power 5 / +", "type": "arcane"},
        "mana_cost": "15",
        "cooldown": "0.5",
-       "projectile": {"trajectory": "straight", "speed": "8", "sprite": 0, "lifetime": "0.1 power 100 / +"} 
+       "projectile": {"trajectory": "straight", "speed": "8", "sprite": 0, "lifetime": "0.1 power 100 / +"}
    }
 }

@@ -1,55 +1,64 @@
 using UnityEngine;
 using System;
-using System.Collections.Generic;
+
 public class ProjectileManager : MonoBehaviour
 {
-    
-    
+    public GameObject[] projectiles;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (GameManager.Instance.projectileManager == null)
-        {
-            GameManager.Instance.projectileManager = this;
-        }    
+        GameManager.Instance.projectileManager = this;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void CreateProjectile(Projectile projectile,Vector3 where, Vector3 direction, Action<Hittable,Vector3> onHit) // This needs a game object to spawn 
+    public void CreateProjectile(
+        int which,
+        string trajectory,
+        Vector3 where,
+        Vector3 direction,
+        float speed,
+        float size,
+        Hittable.Team sourceTeam,
+        Action<Hittable, Vector3> onHit)
     {
-        GameObject new_projectile = Instantiate(projectile.projectileObject, where + direction.normalized*1.1f, Quaternion.Euler(0,0,Mathf.Atan2(direction.y, direction.x)*Mathf.Rad2Deg));
-        new_projectile.GetComponent<ProjectileController>().movement = MakeMovement(projectile.trajectory, RPNEvaluator.RPNEvaluator.Evaluate(projectile.speed,null));
-        new_projectile.GetComponent<ProjectileController>().OnHit += onHit;
-        new_projectile.GetComponent<ProjectileController>().SetLifetime(RPNEvaluator.RPNEvaluator.Evaluatef(projectile.lifetime, new Dictionary<string, float>())); // might need to add to this dictionary.
+        GameObject new_projectile = Instantiate(
+            projectiles[which],
+            where + direction.normalized * 1.1f,
+            Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg)
+        );
+
+        new_projectile.transform.localScale *= size;
+
+        ProjectileController pc = new_projectile.GetComponent<ProjectileController>();
+        pc.sourceTeam = sourceTeam;
+        pc.movement = MakeMovement(trajectory, speed);
+        pc.OnHit += onHit;
     }
 
-   // public void CreateProjectile(int which, string trajectory, Vector3 where, Vector3 direction, float speed, Action<Hittable, Vector3> onHit, float lifetime)
-   // {
-    //    GameObject new_projectile = Instantiate(projectiles[which], where + direction.normalized * 1.1f, Quaternion.Euler(0, 0, Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg));
-     //   new_projectile.GetComponent<ProjectileController>().movement = MakeMovement(trajectory, speed);
-     //   new_projectile.GetComponent<ProjectileController>().OnHit += onHit;
-     //   new_projectile.GetComponent<ProjectileController>().SetLifetime(lifetime);
-   // }
-
-    // Might be a better way to do this, I might jsut turn it into a switch statement for now.
     public ProjectileMovement MakeMovement(string name, float speed)
     {
-        switch(name)
+        if (name == "straight")
         {
-            case "straight":
-                return new StraightProjectileMovement(speed);
-            case "homing":
-                return new HomingProjectileMovement(speed);
-            case "spiraling":
-                return new SpiralingProjectileMovement(speed);
-            default:
-                return null;
+            return new StraightProjectileMovement(speed);
         }
+        if (name == "homing")
+        {
+            return new HomingProjectileMovement(speed);
+        }
+        if (name == "spiraling")
+        {
+            return new SpiralingProjectileMovement(speed);
+        }
+        if (name == "withering")
+        {
+            return new WitheringProjectileMovement(speed);
+        }
+        return null;
     }
-
 }
