@@ -8,6 +8,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public string selectedClass = "mage";
+    private Dictionary<string, CharacterClassData> classes;
+    private CharacterClassData currentClass;
+
     public Hittable hp;
     public HealthBar healthui;
     public ManaBar manaui;
@@ -37,6 +41,14 @@ public class PlayerController : MonoBehaviour
         hp.OnDeath += Die;
         hp.team = Hittable.Team.PLAYER;
 
+        classes = CharacterClassLoader.GetClasses();
+
+        if (!classes.TryGetValue(selectedClass, out currentClass))
+        {
+            Debug.LogWarning("Class " + selectedClass + " not found. Falling back to mage.");
+            currentClass = classes["mage"];
+        }
+
         ApplyStatsForWave(1);
 
         // tell UI elements what to show
@@ -50,13 +62,25 @@ public class PlayerController : MonoBehaviour
     {
         
     }
+
+
+
+
     public void ApplyStatsForWave(int wave)
     {
-        int newMaxHp = 95 + wave * 5;
-        int newMaxMana = 90 + wave * 10;
-        int newManaRegen = 10 + wave;
-        int newSpellPower = wave * 10;
-        int newSpeed = 5;
+        if (currentClass == null)
+        {
+            return;
+        }
+
+        Dictionary<string, int> variables = new Dictionary<string, int>();
+        variables["wave"] = wave;
+
+        int newMaxHp = RPNEvaluator.RPNEvaluator.Evaluate(currentClass.health, variables);
+        int newMaxMana = RPNEvaluator.RPNEvaluator.Evaluate(currentClass.mana, variables);
+        int newManaRegen = RPNEvaluator.RPNEvaluator.Evaluate(currentClass.mana_regeneration, variables);
+        int newSpellPower = RPNEvaluator.RPNEvaluator.Evaluate(currentClass.spellpower, variables);
+        int newSpeed = RPNEvaluator.RPNEvaluator.Evaluate(currentClass.speed, variables);
 
         hp.SetMaxHP(newMaxHp);
 
@@ -67,6 +91,11 @@ public class PlayerController : MonoBehaviour
 
         speed = newSpeed;
     }
+
+
+
+
+
     void OnAttack(InputValue value)
     {
         if (GameManager.Instance.state == GameManager.GameState.PREGAME || GameManager.Instance.state == GameManager.GameState.GAMEOVER) return;

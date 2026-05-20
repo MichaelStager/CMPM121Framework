@@ -41,7 +41,7 @@ public class BaseSpell : ISpell
 
     public virtual int GetDamage()
     {
-        return 100;
+        return Owner.spellPower;    ///Currently this makes our dmg equal to our spell power, we can change this later to be multiplier?
     }
 
     public virtual float GetCooldown()
