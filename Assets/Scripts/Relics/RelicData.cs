@@ -1,5 +1,4 @@
 using System;
-using Newtonsoft.Json;
 
 [Serializable]
 public class RelicData
@@ -15,7 +14,7 @@ public class RelicTriggerData
 {
     public string description;
     public string type;
-    public string amount;
+    public string amount; 
 }
 
 [Serializable]
@@ -23,6 +22,6 @@ public class RelicEffectData
 {
     public string description;
     public string type;
-    public string amount;
-    public string until;
+    public string amount; 
+    public string until; 
 }

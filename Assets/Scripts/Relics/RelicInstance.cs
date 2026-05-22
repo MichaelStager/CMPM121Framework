@@ -44,10 +44,9 @@ public class RelicInstance
         return data.name;
     }
 
-    /// <summary>
-    /// Call this once per frame from PlayerController.Update.
-    /// movementMagnitude should be owner unit movement magnitude.
-    /// </summary>
+   
+    // Call this once per frame from PlayerController.Update.
+    // movementMagnitude should be owner unit movement magnitude.
     public void Tick(float dt, float movementMagnitude, Dictionary<string, int> vars)
     {
         if (data == null || data.trigger == null)
@@ -83,9 +82,8 @@ public class RelicInstance
         }
     }
 
-    /// <summary>
+  
     /// Call when player takes damage.
-    /// </summary>
     public void OnPlayerDamaged(Dictionary<string, int> vars)
     {
         if (data == null || data.trigger == null) return;
@@ -95,9 +93,7 @@ public class RelicInstance
         }
     }
 
-    /// <summary>
     /// Call when player kills an enemy.
-    /// </summary>
     public void OnEnemyKilled(Dictionary<string, int> vars)
     {
         if (data == null || data.trigger == null) return;
@@ -107,9 +103,7 @@ public class RelicInstance
         }
     }
 
-    /// <summary>
     /// Call when player casts a spell (after successful cast).
-    /// </summary>
     public void OnSpellCast()
     {
         if (!effectActive || data == null || data.effect == null) return;
