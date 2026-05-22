@@ -1,13 +1,13 @@
 public abstract class RelicTriggerBase : IRelicTrigger
 {
-    protected readonly RelicContext ctx;
+    protected readonly RelicContext relicContext;
     protected readonly IRelicEffect effect;
     protected readonly RelicData data;
 
-    protected RelicTriggerBase(RelicData data, RelicContext ctx, IRelicEffect effect)
+    protected RelicTriggerBase(RelicData data, RelicContext relicContext, IRelicEffect effect)
     {
         this.data = data;
-        this.ctx = ctx;
+        this.relicContext = relicContext;
         this.effect = effect;
     }
 

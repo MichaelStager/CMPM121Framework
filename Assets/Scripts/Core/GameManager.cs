@@ -73,8 +73,10 @@ public class GameManager
     {
         bool removed = enemies.Remove(enemy);
 
+
         if (removed && currentWaveStats != null)
         {
+            EventBus.Instance.EnemyKilled();
             currentWaveStats.AddEnemyKilled();
         }
     }

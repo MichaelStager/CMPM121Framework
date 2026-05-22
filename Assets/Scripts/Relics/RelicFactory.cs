@@ -1,26 +1,24 @@
-using UnityEngine;
-
 public static class RelicFactory
 {
     public static Relic Create(RelicData data, RelicContext ctx)
     {
         if (data == null || data.trigger == null || data.effect == null)
         {
-            Debug.LogWarning("Invalid relic data.");
+            UnityEngine.Debug.LogWarning("Invalid relic data.");
             return null;
         }
 
         IRelicEffect effect = CreateEffect(data, ctx);
         if (effect == null)
         {
-            Debug.LogWarning("Unknown relic effect: " + data.effect.type);
+            UnityEngine.Debug.LogWarning("Unknown relic effect: " + data.effect.type);
             return null;
         }
 
         IRelicTrigger trigger = CreateTrigger(data, ctx, effect);
         if (trigger == null)
         {
-            Debug.LogWarning("Unknown relic trigger: " + data.trigger.type);
+            UnityEngine.Debug.LogWarning("Unknown relic trigger: " + data.trigger.type);
             return null;
         }
 
@@ -29,13 +27,34 @@ public static class RelicFactory
 
     private static IRelicTrigger CreateTrigger(RelicData data, RelicContext ctx, IRelicEffect effect)
     {
-        // take-damage, on-kill, stand-still, etc.
-        return null;
+        switch (data.trigger.type)
+        {
+            case "take-damage":
+                return new TakeDamageTrigger(data, ctx, effect);
+
+            case "on-kill":
+                return new OnKillTrigger(data, ctx, effect);
+
+            case "stand-still":
+                return new StandStillTrigger(data, ctx, effect);
+
+            default:
+                return null;
+        }
     }
 
     private static IRelicEffect CreateEffect(RelicData data, RelicContext ctx)
     {
-        // gain-mana, gain-spellpower (+temporary until), etc.
-        return null;
+        switch (data.effect.type)
+        {
+            case "gain-mana":
+                return new GainManaEffect(data, ctx);
+
+            case "gain-spellpower":
+                return new GainSpellPowerEffect(data, ctx);
+
+            default:
+                return null;
+        }
     }
 }
