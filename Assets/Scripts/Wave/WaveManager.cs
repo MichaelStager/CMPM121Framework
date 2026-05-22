@@ -6,6 +6,13 @@ using System.Linq;
 
 public  class WaveManager : MonoBehaviour
 {
+    public Image character_selector;
+    public GameObject characterButton;
+
+    private Dictionary<string, CharacterClassData> classes;
+    private List<CharacterSelectorController> characterButtons = new List<CharacterSelectorController>();
+    private string selectedClass = "mage";
+
     public Image level_selector; 
     public GameObject button;   
     public WaveSummaryUI waveSummaryUI; 
@@ -41,12 +48,33 @@ public  class WaveManager : MonoBehaviour
             selectors[i].GetComponent<MenuSelectorController>().spawner = this;
             selectors[i].GetComponent<MenuSelectorController>().SetLevel(levels[i]);
         }
+
+        classes = CharacterClassLoader.GetClasses();
+
+        int index = 0;
+        foreach (string classId in classes.Keys)
+        {
+            GameObject selector = Instantiate(characterButton, character_selector.transform);
+            selector.transform.localPosition = new Vector3(index * 180, 0, 0);
+
+            CharacterSelectorController controller = selector.GetComponent<CharacterSelectorController>();
+            controller.SetCharacter(classId, this);
+
+            Button buttonComponent = selector.GetComponent<Button>();
+            buttonComponent.onClick.AddListener(controller.SelectCharacter);
+
+            characterButtons.Add(controller);
+            index++;
+        }
+
+        SelectCharacter(selectedClass);
     }
 
     public void StartLevel(Level currentLevel)
     {
         selectedLevel = currentLevel;
         level_selector.gameObject.SetActive(false);
+        character_selector.gameObject.SetActive(false);
 
         GameManager.Instance.player.GetComponent<PlayerController>().StartLevel();
 
@@ -162,4 +190,19 @@ public  class WaveManager : MonoBehaviour
             Debug.LogWarning("WaveSummaryUI is missing on EnemySpawner.");
         }
     }
+
+    public void SelectCharacter(string classId)
+    {
+        selectedClass = classId;
+
+        PlayerController player = GameManager.Instance.player.GetComponent<PlayerController>();
+        player.selectedClass = selectedClass;
+
+        foreach (CharacterSelectorController button in characterButtons)
+        {
+            button.SetSelected(button.ClassId == selectedClass);
+        }
+    }
+
+
 }
