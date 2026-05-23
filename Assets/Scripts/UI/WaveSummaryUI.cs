@@ -20,6 +20,11 @@ public class WaveSummaryUI : MonoBehaviour
 
     public PlayerController player;
 
+    [Header("Relic Reward")]
+    public RewardScreenManager rewardScreenManager;
+    private int shownWaveNumber;
+    private bool waitingOnRelicChoice;
+
     void Start()
     {
         if (panel != null)
@@ -46,6 +51,8 @@ public class WaveSummaryUI : MonoBehaviour
     public void Show(WaveStats stats)
     {
         rewardGiven = false;
+        shownWaveNumber = stats.waveNumber;
+        waitingOnRelicChoice = false;
         FindPlayerIfNeeded();
 
         pendingRewardSpell = new SpellBuilder().BuildRandom(player.spellcaster, 2);
@@ -72,6 +79,22 @@ public class WaveSummaryUI : MonoBehaviour
 
     private void OnContinueClicked()
     {
+        // If this is a relic wave and we have a reward manager, open relic reward first.
+        bool isRelicWave = shownWaveNumber >= 3 && shownWaveNumber % 3 == 0;
+
+        if (isRelicWave && rewardScreenManager != null && !waitingOnRelicChoice)
+        {
+            waitingOnRelicChoice = true;
+
+            // Keep wave summary hidden while relic choice is shown.
+            Hide();
+
+            // Open reward flow at this exact wave number.
+            rewardScreenManager.BeginWaveEndRewards(shownWaveNumber);
+            return;
+        }
+
+        // Non-relic wave OR relic flow already completed -> continue normally.
         Hide();
 
         if (spawner != null)
@@ -181,5 +204,15 @@ public class WaveSummaryUI : MonoBehaviour
     public void RefreshRewardState()
     {
         UpdateAcceptButton();
+    }
+
+    public void OnRelicFlowCompleteContinue()
+    {
+        waitingOnRelicChoice = false;
+
+        if (spawner != null)
+        {
+            spawner.NextWave();
+        }
     }
 }

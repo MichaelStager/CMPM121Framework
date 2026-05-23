@@ -833,7 +833,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889e30827d3de8847b0caf6a2d04eb83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rewardUI: {fileID: 1709288111}
+  rewardUIRoot: {fileID: 1709288111}
+  spellRewardPanel: {fileID: 1982188283}
+  relicRewardPanel: {fileID: 1202924358}
+  relicRewardManager: {fileID: 1803653868}
+  player: {fileID: 1718273952}
+  waveManager: {fileID: 1803653861}
+  waveSummaryUI: {fileID: 280528181}
 --- !u!4 &220180078
 Transform:
   m_ObjectHideFlags: 0
@@ -1080,6 +1086,7 @@ MonoBehaviour:
   statsText: {fileID: 14747072}
   continueButton: {fileID: 123171886}
   player: {fileID: 1718273952}
+  rewardScreenManager: {fileID: 220180077}
 --- !u!114 &280528182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7048,6 +7055,19 @@ MonoBehaviour:
   - {fileID: 2073311049}
   - {fileID: 1577913788}
   - {fileID: 587991943}
+--- !u!114 &1803653868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1803653849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ba5dbfdaec820743abc7df7356ed385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RelicRewardManager
+  player: {fileID: 1718273952}
 --- !u!1 &1860547073
 GameObject:
   m_ObjectHideFlags: 0
@@ -58018,6 +58038,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2107732465084047900, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1803653861}
+    - targetCorrespondingSourceObject: {fileID: 2107732465084047900, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1803653868}
   m_SourcePrefab: {fileID: 100100000, guid: b531ed09aa5f5a847918ddac98e4bf16, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

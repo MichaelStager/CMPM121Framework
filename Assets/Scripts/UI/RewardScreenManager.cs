@@ -19,6 +19,8 @@ public class RewardScreenManager : MonoBehaviour
     private bool relicRewardDone = false;
     private int rewardWave = 1;
 
+    public WaveSummaryUI waveSummaryUI;
+
     // Call this when entering wave-end reward phase.
     public void BeginWaveEndRewards(int waveNumber)
     {
@@ -32,6 +34,7 @@ public class RewardScreenManager : MonoBehaviour
 
         // Start with spell reward every wave.
         ShowSpellRewardUI();
+
     }
 
     private void ShowSpellRewardUI()
@@ -100,10 +103,14 @@ public class RewardScreenManager : MonoBehaviour
         relicRewardPanel.SetActive(false);
         rewardUIRoot.SetActive(false);
 
-        // Continue your normal flow here.
-        // Example:
-        // GameManager.Instance.state = GameManager.GameState.COUNTDOWN;
-        // waveManager.BeginNextWaveCountdown();
+        if (waveSummaryUI != null)
+        {
+            waveSummaryUI.OnRelicFlowCompleteContinue();
+        }
+        else
+        {
+            Debug.LogWarning("[Rewards] Missing WaveSummaryUI reference; cannot continue to next wave.");
+        }
 
         Debug.Log("[Rewards] Completed spell + relic flow for wave " + rewardWave);
     }

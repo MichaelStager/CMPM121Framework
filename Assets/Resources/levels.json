@@ -89,7 +89,7 @@
   },
   {
     "name": "Debug",
-    "waves": 2,
+    "waves": 6,
     "spawns": [
       {
         "enemy": "zombie",
