@@ -226,11 +226,17 @@ public class WaveSummaryUI : MonoBehaviour
         pendingRelicChoices.Clear();
 
         FindPlayerIfNeeded();
+        if (relicButtons == null || relicIcons == null || relicNames == null || relicDescriptions == null)
+        {
+            return;
+        }
+
         if (player == null) return;
 
         player.SetRelicWave(waveNumber);
 
         List<RelicData> all = RelicLoader.GetAll();
+
         HashSet<string> owned = new HashSet<string>(
             player.relics
                 .Where(r => r != null && r.Data != null)
@@ -250,8 +256,15 @@ public class WaveSummaryUI : MonoBehaviour
             pool.RemoveAt(index);
         }
 
-        for (int i = 0; i < relicButtons.Length; i++)
+        int uiCount = Mathf.Min(relicButtons.Length, relicIcons.Length, relicNames.Length, relicDescriptions.Length);
+
+        for (int i = 0; i < uiCount; i++)
         {
+            if (relicButtons[i] == null || relicIcons[i] == null || relicNames[i] == null || relicDescriptions[i] == null)
+            {
+                continue;
+            }
+
             bool hasChoice = i < pendingRelicChoices.Count;
             relicButtons[i].gameObject.SetActive(hasChoice);
 
