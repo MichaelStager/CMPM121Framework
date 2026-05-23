@@ -89,11 +89,11 @@
   },
   {
     "name": "Debug",
-    "waves": 2,
+    "waves": 24,
     "spawns": [
       {
         "enemy": "zombie",
-        "count": "5 wave +",
+        "count": "1",
         "hp": "base 5 wave * +",
         "delay": "1",
         "sequence": [ 1, 2, 3 ],
