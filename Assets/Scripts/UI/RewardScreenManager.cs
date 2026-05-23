@@ -2,23 +2,109 @@ using UnityEngine;
 
 public class RewardScreenManager : MonoBehaviour
 {
-    public GameObject rewardUI;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Root Panels")]
+    public GameObject rewardUIRoot;
+    public GameObject spellRewardPanel;  
+    public GameObject relicRewardPanel;  
+
+    [Header("Managers")]
+    public RelicRewardManager relicRewardManager;
+
+    [Header("References")]
+    public PlayerController player;
+    public WaveManager waveManager; 
+
+    private bool rewardsActive = false;
+    private bool spellRewardDone = false;
+    private bool relicRewardDone = false;
+    private int rewardWave = 1;
+
+    // Call this when entering wave-end reward phase.
+    public void BeginWaveEndRewards(int waveNumber)
     {
-        
+        rewardWave = waveNumber;
+        rewardsActive = true;
+
+        spellRewardDone = false;
+        relicRewardDone = (waveNumber % 3 != 0); 
+
+        rewardUIRoot.SetActive(true);
+
+        // Start with spell reward every wave.
+        ShowSpellRewardUI();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void ShowSpellRewardUI()
     {
-        if (GameManager.Instance.state == GameManager.GameState.WAVEEND)
+        spellRewardPanel.SetActive(true);
+        relicRewardPanel.SetActive(false);
+
+        // TODO: keep your existing spell reward setup logic here.
+        // Example: spellRewardGenerator.BuildChoices();
+    }
+
+    private void ShowRelicRewardUI()
+    {
+        spellRewardPanel.SetActive(false);
+        relicRewardPanel.SetActive(true);
+
+        relicRewardManager.player = player;
+        relicRewardManager.OpenChoicesForWave(rewardWave);
+
+        // TODO: Bind relicRewardManager.GetCurrentChoices() to your 3 relic UI cards/buttons.
+    }
+
+    // Hook this to your EXISTING spell reward "choice picked" callback.
+    public void OnSpellRewardChosen()
+    {
+        if (!rewardsActive) return;
+
+        spellRewardDone = true;
+        TryAdvanceRewardFlow();
+    }
+
+    // Hook each relic button to pass 0, 1, or 2.
+    public void OnRelicChosen(int choiceIndex)
+    {
+        if (!rewardsActive) return;
+
+        relicRewardManager.ChooseIndex(choiceIndex);
+        relicRewardDone = true;
+
+        TryAdvanceRewardFlow();
+    }
+
+    private void TryAdvanceRewardFlow()
+    {
+        if (!spellRewardDone)
         {
-            rewardUI.SetActive(true);
+            return;
         }
-        else
+
+        // If relic reward still pending for this wave, show it now.
+        if (!relicRewardDone)
         {
-            rewardUI.SetActive(false);
+            ShowRelicRewardUI();
+            return;
         }
+
+        // Both done -> close rewards + continue.
+        CompleteWaveEndAndContinue();
+    }
+
+    private void CompleteWaveEndAndContinue()
+    {
+        rewardsActive = false;
+
+        spellRewardPanel.SetActive(false);
+        relicRewardPanel.SetActive(false);
+        rewardUIRoot.SetActive(false);
+
+        // Continue your normal flow here.
+        // Example:
+        // GameManager.Instance.state = GameManager.GameState.COUNTDOWN;
+        // waveManager.BeginNextWaveCountdown();
+
+        Debug.Log("[Rewards] Completed spell + relic flow for wave " + rewardWave);
     }
 }
