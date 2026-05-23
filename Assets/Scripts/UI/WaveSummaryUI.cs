@@ -1,6 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using System.Collections.Generic;
+using System.Linq;
 
 public class WaveSummaryUI : MonoBehaviour
 {
@@ -9,6 +13,17 @@ public class WaveSummaryUI : MonoBehaviour
     public Button acceptSpellButton;
     public TMP_Text acceptSpellButtonText;
     private ISpell pendingRewardSpell;
+
+    public GameObject relicChoicesRoot;
+    public Button[] relicButtons;
+    public Image[] relicIcons;
+    public TMP_Text[] relicNames;
+    public TMP_Text[] relicDescriptions;
+
+    private List<RelicData> pendingRelicChoices = new List<RelicData>();
+    private bool relicChoiceRequired;
+    private bool relicChosen;
+    private int currentWaveNumber;
 
     public GameObject panel;
     public TMP_Text titleText;
@@ -62,8 +77,23 @@ public class WaveSummaryUI : MonoBehaviour
         rewardNameText.text = pendingRewardSpell.GetName();
         GameManager.Instance.spellIconManager.PlaceSprite(pendingRewardSpell.GetIcon(),rewardIcon);
 
+        currentWaveNumber = stats.waveNumber;
+        relicChosen = false;
+        relicChoiceRequired = stats.waveNumber >= 3 && stats.waveNumber % 3 == 0;
+
+        if (relicChoicesRoot != null)
+        {
+            relicChoicesRoot.SetActive(relicChoiceRequired);
+        }
+
+        if (relicChoiceRequired)
+        {
+            BuildRelicChoices(stats.waveNumber);
+        }
+
         UpdateAcceptButton();
     }
+
 
     public void Hide()
     {
@@ -72,6 +102,11 @@ public class WaveSummaryUI : MonoBehaviour
 
     private void OnContinueClicked()
     {
+        if (relicChoiceRequired && !relicChosen)
+        {
+            return;
+        }
+
         Hide();
 
         if (spawner != null)
@@ -182,4 +217,86 @@ public class WaveSummaryUI : MonoBehaviour
     {
         UpdateAcceptButton();
     }
+
+
+
+
+    private void BuildRelicChoices(int waveNumber)
+    {
+        pendingRelicChoices.Clear();
+
+        FindPlayerIfNeeded();
+        if (relicButtons == null || relicIcons == null || relicNames == null || relicDescriptions == null)
+        {
+            return;
+        }
+
+        if (player == null) return;
+
+        player.SetRelicWave(waveNumber);
+
+        List<RelicData> all = RelicLoader.GetAll();
+
+        HashSet<string> owned = new HashSet<string>(
+            player.relics
+                .Where(r => r != null && r.Data != null)
+                .Select(r => r.Data.name)
+        );
+
+        List<RelicData> pool = all
+            .Where(r => r != null && !owned.Contains(r.name))
+            .ToList();
+
+        int count = Mathf.Min(3, pool.Count);
+
+        for (int i = 0; i < count; i++)
+        {
+            int index = Random.Range(0, pool.Count);
+            pendingRelicChoices.Add(pool[index]);
+            pool.RemoveAt(index);
+        }
+
+        int uiCount = Mathf.Min(relicButtons.Length, relicIcons.Length, relicNames.Length, relicDescriptions.Length);
+
+        for (int i = 0; i < uiCount; i++)
+        {
+            if (relicButtons[i] == null || relicIcons[i] == null || relicNames[i] == null || relicDescriptions[i] == null)
+            {
+                continue;
+            }
+
+            bool hasChoice = i < pendingRelicChoices.Count;
+            relicButtons[i].gameObject.SetActive(hasChoice);
+
+            if (!hasChoice) continue;
+
+            RelicData relic = pendingRelicChoices[i];
+            relicNames[i].text = relic.name;
+            relicDescriptions[i].text = relic.trigger.description + ", " + relic.effect.description;
+            GameManager.Instance.relicIconManager.PlaceSprite(relic.sprite, relicIcons[i]);
+
+            int choiceIndex = i;
+            relicButtons[i].onClick.RemoveAllListeners();
+            relicButtons[i].onClick.AddListener(() => ChooseRelic(choiceIndex));
+        }
+    }
+
+
+    private void ChooseRelic(int index)
+    {
+        if (!relicChoiceRequired || relicChosen) return;
+        if (index < 0 || index >= pendingRelicChoices.Count) return;
+
+        if (player.AddRelic(pendingRelicChoices[index]))
+        {
+            relicChosen = true;
+
+            if (relicChoicesRoot != null)
+            {
+                relicChoicesRoot.SetActive(false);
+            }
+        }
+    }
+
+
 }
