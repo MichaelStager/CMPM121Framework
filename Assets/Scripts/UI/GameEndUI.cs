@@ -36,7 +36,7 @@ public class GameEndUI : MonoBehaviour
 
     public void ReturnToStart()
     {
-        GameManager.Instance.ResetEnemyList();
+        GameManager.Instance.ResetRun();
         EventBus.Instance.clear();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
