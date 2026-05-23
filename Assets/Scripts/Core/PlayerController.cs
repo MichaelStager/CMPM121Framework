@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,15 +26,12 @@ public class PlayerController : MonoBehaviour
 
     public GameEndUI gameEndUI;
 
-
-
-    // TEMP TESTING ONLY
-    [Header("Relic Test Bootstrap")]
-    public bool testBootstrapRelic = true;
-    public string testRelicName = "Green Gem";
-
-    private Relic testRelic;
+    public List<Relic> relics = new List<Relic>();
     private RelicContext relicContext;
+
+
+
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -67,48 +65,11 @@ public class PlayerController : MonoBehaviour
         manaui.SetSpellCaster(spellcaster);
         spellui.SetSpells(spellcaster.spells, spellcaster.currentSpellIndex);
 
-        //Testing relics DELETE THIS LATER!!!
-        // TEMP TESTING ONLY: bootstrap one relic directly from relics.json
-        if (testBootstrapRelic)
+        relicContext = new RelicContext
         {
-            relicContext = new RelicContext
-            {
-                player = this,
-                currentWave = 1
-            };
-
-            System.Collections.Generic.List<RelicData> allRelics = RelicLoader.GetAll();
-            RelicData selected = null;
-
-            for (int i = 0; i < allRelics.Count; i++)
-            {
-                if (allRelics[i] != null && allRelics[i].name == testRelicName)
-                {
-                    selected = allRelics[i];
-                    break;
-                }
-            }
-
-            if (selected == null)
-            {
-                Debug.LogWarning("[RelicTest] Could not find relic named: " + testRelicName);
-            }
-            else
-            {
-                testRelic = RelicFactory.Create(selected, relicContext);
-
-                if (testRelic == null)
-                {
-                    Debug.LogWarning("[RelicTest] RelicFactory failed for: " + testRelicName);
-                }
-                else
-                {
-                    testRelic.Activate();
-                    Debug.Log("[RelicTest] Activated test relic: " + testRelicName);
-                }
-            }
-        }
-       //------ END OF TEST CODE ------
+            player = this,
+            currentWave = 1
+        };
     }
 
     // Update is called once per frame
@@ -144,13 +105,6 @@ public class PlayerController : MonoBehaviour
         spellcaster.spellPower = newSpellPower;
 
         speed = newSpeed;
-
-        //FOR TESTING ONLY, DELETE THIS LATER!!!
-        if (relicContext != null)
-        {
-            relicContext.currentWave = wave;
-        }
-        //------ END OF TEST CODE ------
     }
 
 
@@ -190,17 +144,51 @@ public class PlayerController : MonoBehaviour
         yield return StartCoroutine(spellcaster.Cast(transform.position, mouseWorld));
         spellui.SetSpells(spellcaster.spells, spellcaster.currentSpellIndex);
         EventBus.Instance.SpellCast();
+
     }
 
-    //TO TEST RELICS DELETE THIS LATER!!!
-    private void OnDestroy()
+    public bool HasRelic(string relicName)
     {
-        if (testRelic != null)
+        return relics.Any(r => r != null && r.Data != null && r.Data.name == relicName);
+    }
+
+    public bool AddRelic(RelicData data)
+    {
+        if (data == null) return false;
+        if (HasRelic(data.name)) return false; // no duplicates
+
+        if (relicContext == null)
         {
-            testRelic.Deactivate();
-            testRelic = null;
+            relicContext = new RelicContext { player = this, currentWave = 1 };
+        }
+
+        Relic relic = RelicFactory.Create(data, relicContext);
+        if (relic == null) return false;
+
+        relics.Add(relic);
+        relic.Activate();
+
+        Debug.Log("[Relic] Added: " + data.name);
+        return true;
+    }
+
+    public void SetRelicWave(int wave)
+    {
+        if (relicContext != null)
+        {
+            relicContext.currentWave = wave;
         }
     }
-    //------ END OF TEST CODE ------
+    private void OnDestroy()
+    {
+        for (int i = 0; i < relics.Count; i++)
+        {
+            if (relics[i] != null)
+            {
+                relics[i].Deactivate();
+            }
+        }
+    }
+
 
 }
