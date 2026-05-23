@@ -1691,20 +1691,20 @@ MonoBehaviour:
   acceptSpellButtonText: {fileID: 695820702}
   relicChoicesRoot: {fileID: 555934036}
   relicButtons:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1382377377}
+  - {fileID: 67901729}
   - {fileID: 401452339}
   relicIcons:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1297972262}
+  - {fileID: 15431448}
   - {fileID: 1767194251}
   relicNames:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 925266335}
+  - {fileID: 1378898820}
   - {fileID: 26130541}
   relicDescriptions:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 289178564}
+  - {fileID: 163108454}
   - {fileID: 1091328149}
   panel: {fileID: 280528179}
   titleText: {fileID: 482700287}
