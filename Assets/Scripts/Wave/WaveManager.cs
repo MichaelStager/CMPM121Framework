@@ -159,7 +159,16 @@ public  class WaveManager : MonoBehaviour
             yield return new WaitForSeconds(longestDelay);
         }
 
-        yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
+        yield return new WaitWhile(() =>
+        GameManager.Instance.state == GameManager.GameState.INWAVE &&
+        GameManager.Instance.enemy_count > 0
+        );
+
+        if (GameManager.Instance.state == GameManager.GameState.GAMEOVER)
+        {
+            yield break;
+        }
+
 
         WaveStats stats = GameManager.Instance.EndWaveStats();
 
@@ -170,6 +179,7 @@ public  class WaveManager : MonoBehaviour
             if (gameEndUI != null)
             {
                 gameEndUI.ShowWin();
+               // GameManager.Instance.ResetEnemyList();
             }
             else
             {

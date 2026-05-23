@@ -112,4 +112,16 @@ public class GameManager
             currentWaveStats.AddDamageTaken(dmg.amount);
         }
     }
+
+
+
+    public void ResetRun()
+    {
+        enemies.Clear();
+        currentWaveStats = null;
+        player = null;
+        state = GameState.PREGAME;
+        countdown = 0;
+    }
+
 }
