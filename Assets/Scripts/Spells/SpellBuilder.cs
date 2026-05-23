@@ -15,14 +15,14 @@ public class SpellBuilder
 
         List<string> possibleModifiers = new List<string>
         {
-           // "homing",
-          //  "chaos",
+            "homing",
+            "chaos",
             "damage_amp",
-           // "speed_amp",
-            //"splitter",
-            //"doubler",
-            //"massive",
-           // "broken",
+            "speed_amp",
+            "splitter",
+            "doubler",
+            "massive",
+            "broken",
            "bubble"
         };
 
