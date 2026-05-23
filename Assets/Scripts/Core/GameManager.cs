@@ -112,4 +112,12 @@ public class GameManager
             currentWaveStats.AddDamageTaken(dmg.amount);
         }
     }
+
+
+
+    public void ResetEnemyList()
+    {
+        enemies.Clear();
+    }
+
 }

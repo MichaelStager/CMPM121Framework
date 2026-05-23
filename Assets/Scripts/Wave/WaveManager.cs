@@ -170,6 +170,7 @@ public  class WaveManager : MonoBehaviour
             if (gameEndUI != null)
             {
                 gameEndUI.ShowWin();
+                GameManager.Instance.ResetEnemyList();
             }
             else
             {
